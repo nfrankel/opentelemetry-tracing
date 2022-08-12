@@ -1,0 +1,40 @@
+version: 3
+
+extra_config:
+  telemetry/opentelemetry:
+    trace_sample_rate: 1
+    exporters:
+      otlp:
+        - name: otlp_exporter
+          host: jaeger
+          port: 4317
+          use_http: false
+          disable_metrics: true
+    layers:
+      proxy:
+        disable_traces: true
+      backend:
+        traces:
+          disable_stage: true
+
+endpoints:
+  - endpoint: /products
+    backend:
+      - host:
+          - catalog:8080
+        url_pattern: /products
+  - endpoint: /products/{id}
+    backend:
+      - host:
+          - catalog:8080
+        url_pattern: /products/{id}
+  - endpoint: /prices
+    backend:
+      - host:
+          - pricing:8000
+        url_pattern: /prices
+  - endpoint: /prices/{id}
+    backend:
+      - host:
+          - pricing:8000
+        url_pattern: /prices/{id}
