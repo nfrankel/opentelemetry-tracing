@@ -1,0 +1,60 @@
+services:
+  jaeger:
+    image: jaegertracing/all-in-one:1.54
+    environment:
+      - COLLECTOR_OTLP_ENABLED=true
+  apisix:
+    image: apache/apisix:3.8.0-debian
+    volumes:
+      - ./config/apisix/config.yml:/usr/local/apisix/conf/config.yaml:ro
+      - ./config/apisix/apisix.yml:/usr/local/apisix/conf/apisix.yaml:ro
+    ports:
+      - "9080:9080"
+    depends_on:
+      - catalog
+  catalog:
+    build: ./catalog
+    environment:
+      SPRING_R2DBC_URL: r2dbc:postgresql://postgres:5432/postgres?schema=catalog
+      SPRING_R2DBC_USERNAME: postgres
+      SPRING_R2DBC_PASSWORD: root
+      APP_PRICING_ENDPOINT: http://apisix:9080/prices
+      APP_STOCK_ENDPOINT: http://inventory:3000/stocks
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://jaeger:4317
+      OTEL_RESOURCE_ATTRIBUTES: service.name=catalog
+      OTEL_METRICS_EXPORTER: none
+      OTEL_LOGS_EXPORTER: none
+    depends_on:
+      - postgres
+      - pricing
+      - inventory
+  pricing:
+    build: ./pricing
+    environment:
+      FLASK_SQLALCHEMY_DATABASE_URI: postgresql://postgres:root@postgres:5432/postgres?options=-c%20search_path=pricing
+      FLASK_SQLALCHEMY_TRACK_MODIFICATIONS: False
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://jaeger:4317
+      OTEL_RESOURCE_ATTRIBUTES: service.name=pricing
+      OTEL_METRICS_EXPORTER: none
+      OTEL_LOGS_EXPORTER: none
+    depends_on:
+      - postgres
+    restart: on-failure:2
+  inventory:
+    build: ./inventory
+    environment:
+      PG_HOST: postgres
+      PG_PORT: 5432
+      PG_USER: postgres
+      PG_PASSWORD: root
+      PG_DBNAME: postgres
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://jaeger:4317
+      OTEL_RESOURCE_ATTRIBUTES: service.name=inventory
+      OTEL_METRICS_EXPORTER: none
+      OTEL_LOGS_EXPORTER: none
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_PASSWORD: root
+    volumes:
+      - ./config/postgres:/docker-entrypoint-initdb.d:ro
