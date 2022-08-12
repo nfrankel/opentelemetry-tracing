@@ -1,0 +1,13 @@
+deployment:
+  role: data_plane
+  role_data_plane:
+    config_provider: yaml
+plugins:
+  - opentelemetry
+  - proxy-rewrite
+plugin_attr:
+  opentelemetry:
+    resource:
+      service.name: APISIX[warehouses]
+    collector:
+      address: jaeger:4318
