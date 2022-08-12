@@ -1,0 +1,83 @@
+{{- with .Values }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: warehouse-us
+  namespace: {{ $.Release.Namespace }}
+  labels:
+    type: app
+    location: us
+    app: warehouse-us
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: warehouse-us
+  template:
+    metadata:
+      labels:
+        type: app
+        location: us
+        app: warehouse-us
+    spec:
+      initContainers:
+        - name: wait-for-postgres
+          image: atkrad/wait4x:3.1
+          command:
+            - wait4x
+            - postgresql
+            - postgres://$(DB_USERNAME):$(DB_PASSWORD)@postgres:5432/postgres?sslmode=disable
+          env:
+            - name: DB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: secrets
+                  key: POSTGRES_USER
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: secrets
+                  key: POSTGRES_PASSWORD
+      containers:
+        - name: warehouse-us
+          image: {{ .apps.warehouses.us.image }}
+          env:
+            - name: PG_HOST
+              value: postgres
+            - name: PG_PORT
+              value: "5432"
+            - name: PG_USER
+              valueFrom:
+                secretKeyRef:
+                  name: secrets
+                  key: POSTGRES_USER
+            - name: PG_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: secrets
+                  key: POSTGRES_PASSWORD
+            - name: PG_DBNAME
+              value: postgres
+            - name: GIN_MODE
+              value: release
+            - name: OTEL_EXPORTER_OTLP_ENDPOINT
+              value: http://collector:4317
+            - name: OTEL_SERVICE_NAME
+              value: stocks USA
+            - name: OTEL_METRICS_EXPORTER
+              value: none
+            - name: OTEL_LOGS_EXPORTER
+              value: none
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: warehouse-us
+  namespace: {{ $.Release.Namespace }}
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8000
+  selector:
+    app: warehouse-us
+{{- end }}
