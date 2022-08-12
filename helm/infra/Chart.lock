@@ -1,0 +1,15 @@
+dependencies:
+- name: opentelemetry-collector
+  repository: https://open-telemetry.github.io/opentelemetry-helm-charts
+  version: 0.117.1
+- name: traefik
+  repository: https://traefik.github.io/charts
+  version: 34.4.0
+- name: valkey
+  repository: https://charts.bitnami.com/bitnami
+  version: 2.4.1
+- name: jaeger
+  repository: https://jaegertracing.github.io/helm-charts
+  version: 3.4.0
+digest: sha256:ce1a936887fdeeb06ca7d1b7386b33b7155db1e2411621b8e7932b5ac1dcfc3c
+generated: "2025-02-27T13:51:51.988350442Z"
