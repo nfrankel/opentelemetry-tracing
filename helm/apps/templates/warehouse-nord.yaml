@@ -1,0 +1,88 @@
+{{- with .Values }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: warehouse-nord
+  namespace: {{ $.Release.Namespace }}
+  labels:
+    type: app
+    location: nord
+    app: warehouse-nord
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: warehouse-nord
+  template:
+    metadata:
+      labels:
+        type: app
+        location: nord
+        app: warehouse-nord
+    spec:
+      initContainers:
+        - name: wait-for-postgres
+          image: atkrad/wait4x:3.1
+          command:
+            - wait4x
+            - postgresql
+            - postgres://$(DB_USERNAME):$(DB_PASSWORD)@postgres:5432/postgres?sslmode=disable
+          env:
+            - name: DB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: secrets
+                  key: POSTGRES_USER
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: secrets
+                  key: POSTGRES_PASSWORD
+      containers:
+        - name: warehouse-nord
+          image: {{ .apps.warehouses.nord.image }}
+          ports:
+            - containerPort: 8000
+          env:
+            - name: PG_HOST
+              value: postgres
+            - name: PG_PORT
+              value: "5432"
+            - name: PG_USER
+              valueFrom:
+                secretKeyRef:
+                  name: secrets
+                  key: POSTGRES_USER
+            - name: PG_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: secrets
+                  key: POSTGRES_PASSWORD
+            - name: PG_DBNAME
+              value: postgres
+            - name: PG_SCHEMA
+              value: warehouse_nord
+            - name: OTEL_EXPORTER_OTLP_ENDPOINT
+              value: http://collector:4317
+            - name: OTEL_EXPORTER_OTLP_PROTOCOL
+              value: grpc
+            - name: OTEL_SERVICE_NAME
+              value: "stocks Scandinavia"
+            - name: OTEL_METRICS_EXPORTER
+              value: none
+            - name: OTEL_LOGS_EXPORTER
+              value: none
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: warehouse-nord
+  namespace: {{ $.Release.Namespace }}
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8000
+      targetPort: 8000
+  selector:
+    app: warehouse-nord
+{{- end }}
