@@ -1,0 +1,59 @@
+{{- with .Values }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .apps.inventory.name }}
+  namespace: {{ include "otel.namespace" . }}
+  labels:
+    type: app
+    app: {{ .apps.inventory.name }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .apps.inventory.name }}
+  template:
+    metadata:
+      labels:
+        type: app
+        app: {{ .apps.inventory.name }}
+    spec:
+      containers:
+        - name: {{ .apps.inventory.name }}
+          image: {{ .apps.inventory.image }}
+          env:
+            - name: WAREHOUSE__0__ENDPOINT
+              value: "http://{{ .apps.warehouses.us.host }}:{{ .apps.warehouses.us.port }}"
+            - name: WAREHOUSE__0__COUNTRY
+              value: USA
+            - name: WAREHOUSE__1__ENDPOINT
+              value: "http://{{ .apps.warehouses.eu.host }}:{{ .apps.warehouses.eu.port }}"
+            - name: WAREHOUSE__2__ENDPOINT
+              value: "http://{{ .apps.warehouses.jp.host }}:{{ .apps.warehouses.jp.port }}"
+            - name: WAREHOUSE__2__COUNTRY
+              value: Japan
+            - name: WAREHOUSE__3__ENDPOINT
+              value: "http://{{ .apps.warehouses.uk.host }}:{{ .apps.warehouses.uk.port }}"
+            - name: WAREHOUSE__3__COUNTRY
+              value: United Kingdom
+            - name: OTEL_EXPORTER_OTLP_ENDPOINT
+              value: "http://{{ .apps.collector.host }}:{{ .apps.collector.ports.grpc }}"
+            - name: OTEL_SERVICE_NAME
+              value: inventory
+            - name: OTEL_METRICS_EXPORTER
+              value: none
+            - name: OTEL_LOGS_EXPORTER
+              value: none
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .apps.inventory.host }}
+  namespace: {{ include "otel.namespace" . }}
+spec:
+  type: NodePort
+  ports:
+    - port: {{ .apps.inventory.port }}
+  selector:
+    app: {{ .apps.inventory.name }}
+{{- end }}

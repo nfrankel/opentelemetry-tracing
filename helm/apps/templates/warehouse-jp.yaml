@@ -1,0 +1,65 @@
+{{- with .Values }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .apps.warehouses.jp.name }}
+  namespace: {{ include "otel.namespace" . }}
+  labels:
+    type: app
+    location: jp
+    app: {{ .apps.warehouses.jp.name }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .apps.warehouses.jp.name }}
+  template:
+    metadata:
+      labels:
+        type: app
+        location: jp
+        app: {{ .apps.warehouses.jp.name }}
+    spec:
+      containers:
+        - name: {{ .apps.warehouses.jp.name }}
+          image: {{ .apps.warehouses.jp.image }}
+          env:
+            - name: PG_HOST
+              value: {{ .global.services.database.host }}
+            - name: PG_PORT
+              value: "{{ .global.services.database.port }}"
+            - name: PG_USER
+              valueFrom:
+                secretKeyRef:
+                  name: secrets
+                  key: POSTGRES_USER
+            - name: PG_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: secrets
+                  key: POSTGRES_PASSWORD
+            - name: PG_DBNAME
+              value: {{ .global.services.database.dbname }}
+            - name: APP_ENV
+              value: production
+            - name: OTEL_EXPORTER_OTLP_ENDPOINT
+              value: "http://{{ .apps.collector.host }}:{{ .apps.collector.ports.http }}"
+            - name: OTEL_SERVICE_NAME
+              value: stocks Japan
+            - name: OTEL_METRICS_EXPORTER
+              value: none
+            - name: OTEL_LOGS_EXPORTER
+              value: none
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .apps.warehouses.jp.host }}
+  namespace: {{ include "otel.namespace" . }}
+spec:
+  type: NodePort
+  ports:
+    - port: {{ .apps.warehouses.jp.port }}
+  selector:
+    app: warehouse-jp
+{{- end }}

@@ -1,0 +1,27 @@
+[package]
+name = "inventory"
+version = "1.0.0"
+edition = "2021"
+
+[dependencies]
+tokio = { version = "1.37", features = ["full"] }
+axum = "0.7"
+axum-macros = "0.4"
+tower = "0.5"
+tower-http = "0.6"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+axum-tracing-opentelemetry = "0.18"
+init-tracing-opentelemetry = { version = "0.18", features = ["otlp", "tracing_subscriber_ext"] }
+opentelemetry = "0.27"
+opentelemetry-otlp = { version = "0.27", features = ["reqwest-client"] }
+tracing = "0.1"
+tracing-opentelemetry = "0.28"
+tracing-subscriber = { version = "0.3", features = ["env-filter", "fmt", "json"] }
+config = "0.14"
+reqwest = { version = "0.12", features = ["http2", "json"], default-features = false }
+reqwest-middleware = "0.4"
+reqwest-tracing = { version = "0.5", features = ["opentelemetry_0_22"] }
+lazy_static = "1.4"
+regex = "1.10"
+futures = "0.3"

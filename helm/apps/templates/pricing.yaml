@@ -1,0 +1,68 @@
+{{- with .Values }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .apps.pricing.name }}
+  namespace: {{ include "otel.namespace" . }}
+  labels:
+    type: app
+    app: {{ .apps.pricing.name }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .apps.pricing.name }}
+  template:
+    metadata:
+      labels:
+        type: app
+        app: {{ .apps.pricing.name }}
+    spec:
+      containers:
+        - name: {{ .apps.pricing.name }}
+          image: {{ .apps.pricing.image }}
+          env:
+            - name: FLASK_SQLALCHEMY_DATABASE_URI
+              value: postgresql://{{ .global.services.database.user }}:{{ .global.services.database.password }}@{{ .global.services.database.host }}:{{ .global.services.database.port }}/{{ .global.services.database.dbname }}?options=-c%20search_path=pricing
+            - name: FLASK_SQLALCHEMY_TRACK_MODIFICATIONS
+              value: "False"
+            - name: OTEL_EXPORTER_OTLP_ENDPOINT
+              value: "http://{{ .apps.collector.host }}:{{ .apps.collector.ports.grpc }}"
+            - name: OTEL_SERVICE_NAME
+              value: pricing
+            - name: OTEL_METRICS_EXPORTER
+              value: none
+            - name: OTEL_LOGS_EXPORTER
+              value: none
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .apps.pricing.host }}
+  namespace: {{ include "otel.namespace" . }}
+spec:
+  type: NodePort
+  ports:
+    - port: {{ .apps.pricing.port }}
+  selector:
+    app: {{ .apps.pricing.name }}
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ .apps.pricing.name }}
+  namespace: {{ include "otel.namespace" . }}
+  annotations:
+    spec.ingressClassName: traefik
+spec:
+  rules:
+    - http:
+        paths:
+          - path: /prices
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ .apps.pricing.name }}
+                port:
+                  number: {{ .apps.pricing.port }}
+{{- end }}
