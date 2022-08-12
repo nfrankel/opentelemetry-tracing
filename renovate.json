@@ -1,0 +1,48 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended"
+  ],
+  "enabledManagers": [
+    "npm",
+    "poetry",
+    "dockerfile",
+    "docker-compose",
+    "maven",
+    "maven-wrapper",
+    "cargo",
+    "gomod",
+    "bundler",
+    "gleam",
+    "helmv3"
+  ],
+  "customManagers": [
+    {
+      "customType": "regex",
+      "fileMatch": ["^helm/.+/values\\.yaml$"],
+      "matchStrings": [
+        "repository: \"(?<depName>[^\"]+)\"\\s+tag: \"(?<currentValue>[^\"]+)\""
+      ],
+      "datasourceTemplate": "docker"
+    }
+  ],
+  "packageRules": [
+    {
+      "matchDatasources": [
+        "docker"
+      ],
+      "matchDepNames": [
+        "otel-catalog",
+        "otel-pricing",
+        "otel-recommendations",
+        "otel-inventory",
+        "otel-warehouse-us",
+        "otel-warehouse-eu",
+        "otel-warehouse-jp",
+        "otel-warehouse-uk",
+        "otel-analytics"
+      ],
+      "enabled": false
+    }
+  ]
+}
