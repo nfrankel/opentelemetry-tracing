@@ -1,0 +1,45 @@
+upstreams:
+  - id: 1
+    nodes:
+      "jaeger:16686": 1
+  - id: 2
+    nodes:
+      "catalog:8080": 1
+  - id: 3
+    nodes:
+      "pricing:8000": 1
+
+routes:
+  - uri: /products*
+    upstream_id: 2
+  - uri: /prices*
+    upstream_id: 3
+  - uris:
+    - /search
+    - /api/*
+    - /static/*
+    - /dependencies
+    - /trace/*
+    - /monitor
+    upstream_id: 1
+    plugins:
+      opentelemetry: null
+  - uri: /
+    upstream_id: 1
+    plugins:
+      opentelemetry: null
+      redirect:
+        uri: /search
+        ret_code: 301
+
+global_rules:
+  - id: 1
+    plugins:
+      opentelemetry:
+        sampler:
+          name: always_on
+        additional_attributes:
+          - route_id
+          - request_method
+          - http_x-otel-key
+#END
