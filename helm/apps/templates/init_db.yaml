@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-init-scripts
+  namespace: {{ .Release.Namespace }}
+data:
+{{- $files := .Files.Glob "files/sql/*.sql" }}
+{{- range $path, $content := $files }}
+  {{ base $path }}: >
+{{ $content | toString | indent 4 }}
+{{- end }}

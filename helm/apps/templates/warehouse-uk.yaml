@@ -1,0 +1,57 @@
+{{- with .Values }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: warehouse-uk
+  namespace: {{ include "otel.namespace" . }}
+  labels:
+    type: app
+    location: eu
+    app: warehouse-uk
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: warehouse-uk
+  template:
+    metadata:
+      labels:
+        type: app
+        location: eu
+        app: warehouse-uk
+    spec:
+      containers:
+        - name: warehouse-uk
+          image: {{ .apps.warehouses.uk.image }}
+          env:
+            - name: QUARKUS_DATASOURCE_DB_KIND
+              value: postgresql
+            - name: QUARKUS_DATASOURCE_JDBC_URL
+              value: jdbc:postgresql://postgres:5432/postgres?currentSchema=warehouse_uk
+            - name: QUARKUS_DATASOURCE_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: secrets
+                  key: POSTGRES_USER
+            - name: QUARKUS_DATASOURCE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: secrets
+                  key: POSTGRES_PASSWORD
+            - name: QUARKUS_OTEL_EXPORTER_OTLP_TRACES_ENDPOINT
+              value: http://collector:4317
+            - name: QUARKUS_OTEL_SERVICE_NAME
+              value: stocks UK
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: warehouse-uk
+  namespace: {{ include "otel.namespace" . }}
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8080
+  selector:
+    app: warehouse-uk
+{{- end }}
