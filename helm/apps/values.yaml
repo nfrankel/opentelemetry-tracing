@@ -1,0 +1,86 @@
+apps:
+  catalog:
+    image: otel-catalog:1.0
+  pricing:
+    image: otel-pricing:1.0
+  inventory:
+    image: otel-inventory:1.0
+  warehouses:
+    eu:
+      image: otel-warehouse-eu:1.0
+    jp:
+      image: otel-warehouse-jp:1.0
+    us:
+      image: otel-warehouse-us:1.0
+    uk:
+      image: otel-warehouse-uk:1.0
+  analytics:
+    image: otel-analytics:1.0
+  recommendations:
+    image: otel-recommendations:1.0
+
+opentelemetry-collector:
+  image:
+    repository: "otel/opentelemetry-collector-k8s"
+  fullnameOverride: collector
+  enabled: true
+  mode: deployment
+  presets:
+    kubernetesAttributes:
+      enabled: true
+  serviceAccount:
+    create: false
+  ports:
+    jaeger-compact:
+      enabled: false
+    jaeger-thrift:
+      enabled: false
+    jaeger-grpc:
+      enabled: false
+    zipkin:
+      enabled: false
+  config:
+    processors:
+      batch: {}
+    exporters:
+      debug:
+        sampling_initial: 1
+        sampling_thereafter: 50
+      otlp:
+        endpoint: tracing:4317
+        tls:
+          insecure: true
+    service:
+      pipelines:
+        traces:
+          receivers:
+            - otlp
+          processors:
+            - batch
+          exporters:
+            - otlp
+
+postgresql:
+  fullnameOverride: postgres
+  auth:
+    existingSecret: secrets
+    secretKeys:
+      adminPasswordKey: POSTGRES_PASSWORD
+  primary:
+    persistence:
+      enabled: false
+    initdb:
+      scriptsConfigMap: postgres-init-scripts
+
+opentelemetry-operator:
+  fullnameOverride: opentelemetry-operator
+  crds:
+    create: true
+  manager:
+    collectorImage:
+      repository: otel/opentelemetry-collector-k8s
+  admissionWebhooks:
+    certManager:
+      enabled: false
+    autoGenerateCert:
+      enabled: true
