@@ -1,0 +1,55 @@
+{{- with .Values }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: warehouse-eu
+  namespace: {{ include "otel.namespace" . }}
+  labels:
+    type: app
+    location: eu
+    app: warehouse-eu
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: warehouse-eu
+  template:
+    metadata:
+      labels:
+        type: app
+        location: eu
+        app: warehouse-eu
+    spec:
+      containers:
+        - name: warehouse-us
+          image: {{ .apps.warehouses.eu.image }}
+          env:
+            - name: SPRING_R2DBC_URL
+              value: r2dbc:postgresql://postgres:5432/postgres?schema=warehouse_eu
+            - name: SPRING_R2DBC_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: secrets
+                  key: POSTGRES_USER
+            - name: SPRING_R2DBC_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: secrets
+                  key: POSTGRES_PASSWORD
+            - name: MANAGEMENT_OTLP_TRACING_ENDPOINT
+              value: http://collector:4318/v1/traces
+            - name: OTEL_SERVICE_NAME
+              value: stocks Europe
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: warehouse-eu
+  namespace: {{ include "otel.namespace" . }}
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8080
+  selector:
+    app: warehouse-eu
+{{- end }}
