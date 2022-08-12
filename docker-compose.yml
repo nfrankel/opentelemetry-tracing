@@ -1,0 +1,136 @@
+services:
+  jaeger:
+    image: jaegertracing/all-in-one:1.60
+    environment:
+      COLLECTOR_OTLP_ENABLED: true
+    ports:
+      - "9080:16686"
+  krakend:
+    image: devopsfaith/krakend:2.8
+    command:
+      - run
+      - -c
+      - krakend.yaml
+    volumes:
+      - ./config/krakend/krakend.yml:/etc/krakend/krakend.yaml:ro
+    ports:
+      - "8080:8080"
+    depends_on:
+      - catalog
+  catalog:
+    image: otel-catalog:1.0
+    environment:
+      SPRING_R2DBC_URL: r2dbc:postgresql://postgres:5432/postgres?schema=catalog
+      SPRING_R2DBC_USERNAME: postgres
+      SPRING_R2DBC_PASSWORD: root
+      APP_PRICING_ENDPOINT: http://krakend:8080/prices
+      APP_STOCK_ENDPOINT: http://inventory:3000/stocks
+      APP_RECOMMENDATIONS_ENDPOINT: http://recommendations:8000/recommendations
+      SPRING_DATA_REDIS_HOST: valkey
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://jaeger:4318
+      OTEL_SERVICE_NAME: catalog
+      OTEL_METRICS_EXPORTER: none
+      OTEL_LOGS_EXPORTER: none
+    depends_on:
+      - postgres
+      - pricing
+      - inventory
+      - recommendations
+  pricing:
+    image: otel-pricing:1.0
+    environment:
+      FLASK_SQLALCHEMY_DATABASE_URI: postgresql://postgres:root@postgres:5432/postgres?options=-c%20search_path=pricing
+      FLASK_SQLALCHEMY_TRACK_MODIFICATIONS: False
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://jaeger:4317
+      OTEL_SERVICE_NAME: pricing
+      OTEL_METRICS_EXPORTER: none
+      OTEL_LOGS_EXPORTER: none
+    depends_on:
+      - postgres
+    restart: on-failure:2
+  recommendations:
+    image: otel-recommendations:1.0
+    environment:
+      DATABASE_URL: postgresql://postgres:root@postgres:5432/postgres
+      POSTGRES_SCHEMA: recommendations  
+  inventory:
+    image: otel-inventory:1.0
+    environment:
+      WAREHOUSE__0__ENDPOINT: http://warehouse-us:8000
+      WAREHOUSE__0__COUNTRY: USA
+      WAREHOUSE__1__ENDPOINT: http://warehouse-eu:8080
+      WAREHOUSE__2__ENDPOINT: http://warehouse-jp:8080
+      WAREHOUSE__2__COUNTRY: Japan
+      WAREHOUSE__3__ENDPOINT: http://warehouse-uk:8080
+      WAREHOUSE__3__COUNTRY: United Kingdom
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://jaeger:4317
+      OTEL_SERVICE_NAME: inventory
+      OTEL_METRICS_EXPORTER: none
+      OTEL_LOGS_EXPORTER: none
+    depends_on:
+      - warehouse-us
+      - warehouse-eu
+      - warehouse-jp
+  warehouse-us:
+    image: otel-warehouse-us:1.0
+    environment:
+      PG_HOST: postgres
+      PG_PORT: 5432
+      PG_USER: postgres
+      PG_PASSWORD: root
+      PG_DBNAME: postgres
+      GIN_MODE: release
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://jaeger:4317
+      OTEL_SERVICE_NAME: stocks USA
+      OTEL_METRICS_EXPORTER: none
+      OTEL_LOGS_EXPORTER: none
+    depends_on:
+      - postgres
+    restart: on-failure:5
+  warehouse-eu:
+    image: otel-warehouse-eu:1.0
+    environment:
+      SPRING_R2DBC_URL: r2dbc:postgresql://postgres:5432/postgres?schema=warehouse_eu
+      SPRING_R2DBC_USERNAME: postgres
+      SPRING_R2DBC_PASSWORD: root
+      MANAGEMENT_OTLP_TRACING_ENDPOINT: http://jaeger:4318/v1/traces
+      SPRING_APPLICATION_NAME: stocks Europe
+    depends_on:
+      - postgres
+  warehouse-jp:
+    image: otel-warehouse-jp:1.0
+    environment:
+      PG_HOST: postgres
+      PG_PORT: 5432
+      PG_USER: postgres
+      PG_PASSWORD: root
+      PG_DBNAME: postgres
+      APP_ENV: production
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://jaeger:4318
+      OTEL_SERVICE_NAME: stocks Japan
+      OTEL_METRICS_EXPORTER: none
+      OTEL_LOGS_EXPORTER: none
+    depends_on:
+      - postgres
+    restart: on-failure:3
+  warehouse-uk:
+    image: otel-warehouse-uk:1.0
+    environment:
+      QUARKUS_DATASOURCE_DB_KIND: postgresql
+      QUARKUS_DATASOURCE_JDBC_URL: jdbc:postgresql://postgres:5432/postgres?currentSchema=warehouse_uk
+      QUARKUS_DATASOURCE_USERNAME: postgres
+      QUARKUS_DATASOURCE_PASSWORD: root
+      QUARKUS_OTEL_EXPORTER_OTLP_TRACES_ENDPOINT: http://jaeger:4317
+      QUARKUS_OTEL_SERVICE_NAME: stocks UK
+    depends_on:
+      - postgres
+  postgres:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_PASSWORD: root
+    volumes:
+      - ./config/postgres:/docker-entrypoint-initdb.d:ro
+  valkey:
+    image: bitnami/valkey:8.0.1-debian-12-r1
+    environment:
+      ALLOW_EMPTY_PASSWORD: true
