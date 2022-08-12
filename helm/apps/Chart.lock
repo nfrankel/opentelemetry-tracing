@@ -1,0 +1,12 @@
+dependencies:
+- name: opentelemetry-collector
+  repository: https://open-telemetry.github.io/opentelemetry-helm-charts
+  version: 0.120.0
+- name: postgresql
+  repository: https://charts.bitnami.com/bitnami
+  version: 16.6.0
+- name: opentelemetry-operator
+  repository: https://open-telemetry.github.io/opentelemetry-helm-charts
+  version: 0.84.1
+digest: sha256:b4e1ead8684bf0f8e138f83c9aba302c896dd5209e48eb56e3bd75f6ef47854e
+generated: "2025-04-01T15:25:26.623409118Z"
