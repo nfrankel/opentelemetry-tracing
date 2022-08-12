@@ -1,0 +1,41 @@
+upstreams:
+  - id: 1
+    nodes:
+      "warehouse-us:8000": 1
+  - id: 2
+    nodes:
+      "warehouse-eu:8080": 1
+  - id: 3
+    nodes:
+      "warehouse-jp:8080": 1
+
+routes:
+  - uri: /warehouse/us*
+    upstream_id: 1
+    plugins:
+      proxy-rewrite:
+        regex_uri:
+          - ^/warehouse/us/(.*)
+          - /$1
+  - uri: /warehouse/eu*
+    upstream_id: 2
+    plugins:
+      proxy-rewrite:
+        regex_uri:
+          - ^/warehouse/eu/(.*)
+          - /$1
+  - uri: /warehouse/jp*
+    upstream_id: 3
+    plugins:
+      proxy-rewrite:
+        regex_uri:
+          - ^/warehouse/jp/(.*)
+          - /$1
+
+global_rules:
+  - id: 1
+    plugins:
+      opentelemetry:
+        sampler:
+          name: always_on
+#END
