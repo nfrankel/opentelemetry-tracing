@@ -1,0 +1,30 @@
+apiVersion: v2
+name: otel
+description: Helm chart for the OpenTelemetry Demo
+
+type: application
+
+# This is the chart version. This version number should be incremented each time you make changes
+# to the chart and its templates, including the app version.
+# Versions are expected to follow Semantic Versioning (https://semver.org/)
+version: 1.0.0
+
+# This is the version number of the application being deployed. This version number should be
+# incremented each time you make changes to the application. Versions are not expected to
+# follow Semantic Versioning. They should reflect the version the application is using.
+# It is recommended to use it with quotes.
+appVersion: "1.0.0"
+
+dependencies:
+  - name: opentelemetry-collector
+    version: "0.127.1"
+    repository: "https://open-telemetry.github.io/opentelemetry-helm-charts"
+  - name: traefik
+    version: "35.4.0"
+    repository: https://traefik.github.io/charts
+  - name: valkey
+    version: "3.0.15"
+    repository: https://charts.bitnami.com/bitnami
+  - name: jaeger
+    version: "3.4.1"
+    repository: https://jaegertracing.github.io/helm-charts
