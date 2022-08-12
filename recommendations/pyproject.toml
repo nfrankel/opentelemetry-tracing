@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "comments"
+version = "1.0.0"
+authors = ["Nicolas Fränkel <nicolas@frankel.ch>"]
+package-mode = false
+
+[tool.poetry.dependencies]
+python = "^3.13"
+fastapi = {extras = ["standard"], version = "^0.115.5"}
+orjson = "^3.10.11"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
