@@ -1,4 +1,4 @@
-FROM --platform=linux/x86_64 eclipse-temurin:17-jdk-alpine as build
+FROM --platform=linux/x86_64 eclipse-temurin:18-jdk-alpine as build
 
 COPY .mvn .mvn
 COPY mvnw .
@@ -7,7 +7,7 @@ COPY src src
 
 RUN --mount=type=cache,target=/root/.m2,rw ./mvnw package -DskipTests
 
-FROM --platform=linux/x86_64 eclipse-temurin:17-jre-alpine
+FROM --platform=linux/x86_64 eclipse-temurin:18-jre-alpine
 
 COPY --from=build target/catalog-1.0-SNAPSHOT.jar catalog.jar
 
