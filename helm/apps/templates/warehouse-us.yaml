@@ -1,0 +1,66 @@
+{{- with .Values }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .apps.warehouses.us.name }}
+  namespace: {{ include "otel.namespace" . }}
+  labels:
+    type: app
+    location: us
+    app: {{ .apps.warehouses.us.name }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .apps.warehouses.us.name }}
+  template:
+    metadata:
+      labels:
+        type: app
+        location: us
+        app: {{ .apps.warehouses.us.name }}
+    spec:
+      containers:
+        - name: {{ .apps.warehouses.us.name }}
+          image: {{ .apps.warehouses.us.image }}
+          imagePullPolicy: Never
+          env:
+            - name: PG_HOST
+              value: {{ .global.services.database.host }}
+            - name: PG_PORT
+              value: "{{ .global.services.database.port }}"
+            - name: PG_USER
+              valueFrom:
+                secretKeyRef:
+                  name: secrets
+                  key: POSTGRES_USER
+            - name: PG_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: secrets
+                  key: POSTGRES_PASSWORD
+            - name: PG_DBNAME
+              value: {{ .global.services.database.dbname }}
+            - name: GIN_MODE
+              value: release
+            - name: OTEL_EXPORTER_OTLP_ENDPOINT
+              value: "http://{{ .apps.collector.host }}:{{ .apps.collector.ports.grpc }}"
+            - name: OTEL_SERVICE_NAME
+              value: stocks USA
+            - name: OTEL_METRICS_EXPORTER
+              value: none
+            - name: OTEL_LOGS_EXPORTER
+              value: none
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .apps.warehouses.us.host }}
+  namespace: {{ include "otel.namespace" . }}
+spec:
+  type: NodePort
+  ports:
+    - port: {{ .apps.warehouses.us.port }}
+  selector:
+    app: {{ .apps.warehouses.us.name }}
+{{- end }}

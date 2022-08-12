@@ -1,0 +1,36 @@
+{{- with .Values }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .global.services.cache.name }}
+  namespace: {{ include "otel.namespace" . }}
+  labels:
+    type: infra
+    database: {{ .global.services.cache.name }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      database: {{ .global.services.cache.name }}
+  template:
+    metadata:
+      labels:
+        type: infra
+        database: {{ .global.services.cache.name }}
+    spec:
+      containers:
+        - name: {{ .global.services.cache.name }}
+          image: {{ .global.services.cache.image }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .global.services.cache.host }}
+  namespace: {{ include "otel.namespace" . }}
+spec:
+  type: ClusterIP
+  ports:
+    - port: {{ .global.services.cache.port }}
+  selector:
+    database: {{ .global.services.cache.name }}
+{{- end }}

@@ -1,0 +1,40 @@
+opentelemetry-collector:
+  image:
+    repository: "otel/opentelemetry-collector-k8s"
+  fullnameOverride: collector
+  enabled: true
+  mode: deployment
+  serviceAccount:
+    create: false
+  ports:
+    jaeger-compact:
+      enabled: false
+    jaeger-thrift:
+      enabled: false
+    jaeger-grpc:
+      enabled: false
+    zipkin:
+      enabled: false
+  config:
+    processors:
+      batch: {}
+      attributes:
+        actions:
+          - key: cluster
+            value: host
+            action: upsert
+    exporters:
+      otlp:
+        endpoint: "{{ .Values.global.services.tracing.host }}:{{ .Values.global.services.tracing.ports.grpc }}"
+        tls:
+          insecure: true
+    service:
+      pipelines:
+        traces:
+          receivers: 
+            - otlp
+          processors:
+            - batch
+            - attributes
+          exporters:
+            - otlp

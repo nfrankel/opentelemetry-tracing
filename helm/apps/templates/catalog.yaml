@@ -1,0 +1,96 @@
+{{- with .Values }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: catalog
+  namespace: {{ include "otel.namespace" . }}
+  labels:
+    type: app
+    app: {{ .apps.catalog.name }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .apps.catalog.name }}
+  template:
+    metadata:
+      labels:
+        type: app
+        app: {{ .apps.catalog.name }}
+    spec:
+      containers:
+        - name: {{ .apps.catalog.name }}
+          image: {{ .apps.catalog.image }}
+          env:
+            - name: SPRING_R2DBC_URL
+              value: r2dbc:postgresql://{{ .global.services.database.host }}:{{ .global.services.database.port }}/{{ .global.services.database.dbname }}?schema=catalog
+            - name: SPRING_R2DBC_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: secrets
+                  key: POSTGRES_USER
+            - name: SPRING_R2DBC_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: secrets
+                  key: POSTGRES_PASSWORD
+            - name: SPRING_DATA_REDIS_HOST
+              value: {{ .global.services.cache.host }}
+            - name: APP_PRICING_ENDPOINT
+              value: http://{{ .global.services.ingress.host }}/prices
+            - name: APP_STOCK_ENDPOINT
+              value: http://{{ .apps.inventory.host }}:{{ .apps.inventory.port }}/stocks
+            - name: APP_MQTT_SERVER_URI
+              value: tcp://mosquitto:1883
+            - name: APP_MQTT_CLIENT_ID
+              value: {{ .apps.catalog.name }}
+            - name: APP_MQTT_TOPIC
+              value: {{ .apps.analytics.queue_name }}
+            - name: APP_MQTT_MESSAGE_QOS
+              value: "1"
+            - name: APP_MQTT_MESSAGE_RETAINED
+              value: "true"
+            - name: APP_MQTT_CONNECT_AUTOMATIC
+              value: "true"
+            - name: APP_MQTT_CONNECT_TIMEOUT
+              value: "5"
+            - name: OTEL_EXPORTER_OTLP_ENDPOINT
+              value: "http://{{ .apps.collector.host }}:{{ .apps.collector.ports.http }}"
+            - name: OTEL_SERVICE_NAME
+              value: catalog
+            - name: OTEL_METRICS_EXPORTER
+              value: none
+            - name: OTEL_LOGS_EXPORTER
+              value: none
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .apps.catalog.host }}
+  namespace: {{ include "otel.namespace" . }}
+spec:
+  type: NodePort
+  ports:
+    - port: {{ .apps.catalog.port }}
+  selector:
+    app: catalog
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ .apps.catalog.name }}
+  namespace: {{ include "otel.namespace" . }}
+  annotations:
+    spec.ingressClassName: traefik
+spec:
+  rules:
+    - http:
+        paths:
+          - path: /products
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ .apps.catalog.name }}
+                port:
+                  number: {{ .apps.catalog.port }}
+{{- end }}

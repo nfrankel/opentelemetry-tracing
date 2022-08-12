@@ -1,0 +1,145 @@
+{{- with .Values }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .global.services.ingress.name }}
+  namespace: {{ include "otel.namespace" . }}
+  labels:
+    type: infra
+    ingress: {{ .global.services.ingress.name }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      type: infra
+      ingress: {{ .global.services.ingress.name }}
+  template:
+    metadata:
+      labels:
+        type: infra
+        ingress: {{ .global.services.ingress.name }}
+    spec:
+      serviceAccountName: {{ .global.services.ingress.name }}-account
+      containers:
+        - name: {{ .global.services.ingress.name }}
+          image: {{ .global.services.ingress.image }}
+          ports:
+            - name: web
+              containerPort: {{ .global.services.ingress.ports.http }}
+          env:
+            - name: TRAEFIK_ENTRYPOINTS_WEB_ADDRESS
+              value: ":{{ .global.services.ingress.ports.http }}"
+            - name: TRAEFIK_PROVIDERS_KUBERNETESINGRESS
+              value: "true"
+            - name: TRAEFIK_TRACING
+              value: "true"
+            - name: TRAEFIK_TRACING_ADDINTERNALS
+              value: "true"
+            - name: TRAEFIK_TRACING_OTLP
+              value: "true"
+            - name: TRAEFIK_TRACING_OTLP_GRPC
+              value: "true"
+            - name: TRAEFIK_TRACING_OTLP_GRPC_ENDPOINT
+              value: {{ .global.services.collector.host }}:{{ .global.services.collector.ports.grpc }}
+            - name: TRAEFIK_TRACING_OTLP_GRPC_INSECURE
+              value: "true"
+            - name: TRAEFIK_ACCESSLOG
+              value: "true"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .global.services.ingress.host }}
+  namespace: {{ include "otel.namespace" . }}
+spec:
+  type: NodePort
+  ports:
+    - port: {{ .global.services.ingress.ports.http }}
+      nodePort: {{ .global.services.ingress.ports.host_http }}
+  selector:
+    type: infra
+    ingress: {{ .global.services.ingress.name }}
+---
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: traefik-role
+rules:
+  - apiGroups:
+      - ""
+    resources:
+      - services
+      - secrets
+      - nodes
+    verbs:
+      - get
+      - list
+      - watch
+  - apiGroups:
+      - discovery.k8s.io
+    resources:
+      - endpointslices
+    verbs:
+      - list
+      - watch
+  - apiGroups:
+      - extensions
+      - networking.k8s.io
+    resources:
+      - ingresses
+      - ingressclasses
+    verbs:
+      - get
+      - list
+      - watch
+  - apiGroups:
+      - extensions
+      - networking.k8s.io
+    resources:
+      - ingresses/status
+    verbs:
+      - update
+  - apiGroups:
+      - traefik.io
+    resources:
+      - middlewares
+      - middlewaretcps
+      - ingressroutes
+      - traefikservices
+      - ingressroutetcps
+      - ingressrouteudps
+      - tlsoptions
+      - tlsstores
+      - serverstransports
+      - serverstransporttcps
+    verbs:
+      - get
+      - list
+      - watch
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: {{ .global.services.ingress.name }}-account
+---
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: {{ .global.services.ingress.name }}-role-binding
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: {{ .global.services.ingress.name }}-role
+subjects:
+  - kind: ServiceAccount
+    name: {{ .global.services.ingress.name }}-account
+    namespace: {{ include "otel.namespace" . }}
+---
+apiVersion: networking.k8s.io/v1
+kind: IngressClass
+metadata:
+  name: {{ .global.services.ingress.name }}
+  namespace: {{ include "otel.namespace" . }}
+spec:
+  controller: traefik.io/ingress-controller
+{{- end }}
