@@ -1,0 +1,54 @@
+= OpenTelemetry demo
+
+Here's the architecture:
+
+image::components.jpg[OpenTelemetry demo components diagram]
+
+The result is the following
+
+image::overview.png[OpenTelemetry demo Jaeger overview]
+
+== Build images
+
+You need a local Docker daemon, _e.g._, Docker Desktop or Orbstack.
+
+At the root of the repo, run:
+
+[source,bash]
+----
+./build.sh
+----
+
+== Docker compose usage
+
+If the images are built:
+
+[source,bash]
+----
+docker compose up
+----
+
+If not:
+
+[source,bash]
+----
+docker compose -f docker-compose-build.yml up
+----
+
+Be patient, the stack builds a Rust and a GraalVM-native app (among others).
+
+== Kubernetes usage
+
+* Install the infrastructure components in the `otel-infra` namespace:
++
+[source,bash]
+----
+helm upgrade --install otel-infra ./helm/infra --values helm/infra/values.yaml --namespace infra --create-namespace
+----
++
+* Install the application components in the `otel-apps` namespace:
++
+[source,bash]
+----
+helm upgrade --install otel-apps ./helm/apps --values helm/apps/values.yaml --namespace apps --create-namespace
+----

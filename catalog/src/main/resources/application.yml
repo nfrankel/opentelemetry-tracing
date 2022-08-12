@@ -1,0 +1,4 @@
+app.pricing.endpoint: http://localhost:5000/price
+spring.data.redis:
+  client-type: lettuce
+  repositories.enabled: false

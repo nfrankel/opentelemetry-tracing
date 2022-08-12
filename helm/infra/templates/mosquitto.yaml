@@ -1,0 +1,53 @@
+{{- with .Values }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mosquitto
+  namespace: {{ $.Release.Namespace }}
+  labels:
+    type: infra
+    mq: mosquitto
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      mq: mosquitto
+  template:
+    metadata:
+      labels:
+        type: infra
+        mq: mosquitto
+    spec:
+      containers:
+        - name: mosquitto
+          image: eclipse-mosquitto:2.0
+          volumeMounts:
+            - name: config
+              mountPath: /mosquitto/config
+      volumes:
+        - name: config
+          configMap:
+            name: mosquitto-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mosquitto
+  namespace: {{ $.Release.Namespace }}
+spec:
+  type: ClusterIP
+  ports:
+    - port: 1883
+  selector:
+    mq: mosquitto
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: {{ $.Release.Namespace }}
+  name: mosquitto-config
+data:
+  mosquitto.conf: |
+    listener 1883
+    allow_anonymous true
+{{- end }}
