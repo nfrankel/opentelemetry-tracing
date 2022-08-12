@@ -1,0 +1,38 @@
+{{- with .Values }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: recommendations
+  namespace: {{ include "otel.namespace" . }}
+  labels:
+    type: app
+    app: recommendations
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: recommendations
+  template:
+    metadata:
+      annotations:
+        instrumentation.opentelemetry.io/inject-python: "true"
+      labels:
+        type: app
+        app: recommendations
+    spec:
+      containers:
+        - name: recommendations
+          image: {{ .apps.recommendations.image }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: recommendations
+  namespace: {{ include "otel.namespace" . }}
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8000
+  selector:
+    app: recommendations
+{{- end }}
