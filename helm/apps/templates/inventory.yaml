@@ -1,0 +1,59 @@
+{{- with .Values }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: inventory
+  namespace: {{ $.Release.Namespace }}
+  labels:
+    type: app
+    app: inventory
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: inventory
+  template:
+    metadata:
+      labels:
+        type: app
+        app: inventory
+    spec:
+      containers:
+        - name: inventory
+          image: {{ .apps.inventory.image }}
+          env:
+            - name: WAREHOUSE__0__ENDPOINT
+              value: http://warehouse-us:8000
+            - name: WAREHOUSE__0__COUNTRY
+              value: USA
+            - name: WAREHOUSE__1__ENDPOINT
+              value: http://warehouse-eu:8080
+            - name: WAREHOUSE__2__ENDPOINT
+              value: http://warehouse-jp:8080
+            - name: WAREHOUSE__2__COUNTRY
+              value: Japan
+            - name: WAREHOUSE__3__ENDPOINT
+              value: http://warehouse-uk:8080
+            - name: WAREHOUSE__3__COUNTRY
+              value: United Kingdom
+            - name: OTEL_EXPORTER_OTLP_ENDPOINT
+              value: http://collector:4317
+            - name: OTEL_SERVICE_NAME
+              value: inventory
+            - name: OTEL_METRICS_EXPORTER
+              value: none
+            - name: OTEL_LOGS_EXPORTER
+              value: none
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: inventory
+  namespace: {{ $.Release.Namespace }}
+spec:
+  type: ClusterIP
+  ports:
+    - port: 3000
+  selector:
+    app: inventory
+{{- end }}
