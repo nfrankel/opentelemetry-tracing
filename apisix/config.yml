@@ -1,0 +1,12 @@
+deployment:
+  role: data_plane
+  role_data_plane:
+    config_provider: yaml
+plugins:
+  - opentelemetry
+plugin_attr:
+  opentelemetry:
+    resource:
+      service.name: APISIX
+    collector:
+      address: jaeger:4318
