@@ -1,0 +1,96 @@
+{{- with .Values }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: catalog
+  namespace: {{ include "otel.namespace" . }}
+  labels:
+    type: app
+    app: catalog
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: catalog
+  template:
+    metadata:
+      labels:
+        type: app
+        app: catalog
+    spec:
+      containers:
+        - name: catalog
+          image: {{ .apps.catalog.image }}
+          env:
+            - name: SPRING_R2DBC_URL
+              value: r2dbc:postgresql://postgres:5432/postgres?schema=catalog
+            - name: SPRING_R2DBC_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: secrets
+                  key: POSTGRES_USER
+            - name: SPRING_R2DBC_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: secrets
+                  key: POSTGRES_PASSWORD
+            - name: SPRING_DATA_REDIS_HOST
+              value: cache
+            - name: APP_PRICING_ENDPOINT
+              value: http://pricing:8000/prices
+            - name: APP_STOCK_ENDPOINT
+              value: http://inventory:3000/stocks
+            - name: APP_MQTT_SERVER_URI
+              value: tcp://messages:1883
+            - name: APP_MQTT_CLIENT_ID
+              value: catalog
+            - name: APP_MQTT_TOPIC
+              value: analytics
+            - name: APP_MQTT_MESSAGE_QOS
+              value: "1"
+            - name: APP_MQTT_MESSAGE_RETAINED
+              value: "true"
+            - name: APP_MQTT_CONNECT_AUTOMATIC
+              value: "true"
+            - name: APP_MQTT_CONNECT_TIMEOUT
+              value: "5"
+            - name: OTEL_EXPORTER_OTLP_ENDPOINT
+              value: http://collector:4318
+            - name: OTEL_SERVICE_NAME
+              value: catalog
+            - name: OTEL_METRICS_EXPORTER
+              value: none
+            - name: OTEL_LOGS_EXPORTER
+              value: none
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: catalog
+  namespace: {{ include "otel.namespace" . }}
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8080
+  selector:
+    app: catalog
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: catalog
+  namespace: {{ include "otel.namespace" . }}
+  annotations:
+    spec.ingressClassName: traefik
+spec:
+  rules:
+    - http:
+        paths:
+          - path: /products
+            pathType: Prefix
+            backend:
+              service:
+                name: catalog
+                port:
+                  number: 8080
+{{- end }}
