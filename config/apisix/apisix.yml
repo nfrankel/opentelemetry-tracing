@@ -1,0 +1,65 @@
+upstreams:
+  - id: 1
+    nodes:
+      "jaeger:16686": 1
+  - id: 2
+    nodes:
+      "catalog:8080": 1
+  - id: 3
+    nodes:
+      "pricing:8000": 1
+  - id: 4
+    nodes:
+      "warehouse-us:8000": 1
+  - id: 5
+    nodes:
+      "warehouse-eu:8080": 1
+
+routes:
+  - uri: /products*
+    name: Product
+    upstream_id: 2
+  - uri: /prices*
+    upstream_id: 3
+  - uri: /warehouse/us*
+    upstream_id: 4
+    plugins:
+      proxy-rewrite:
+        regex_uri:
+          - ^/warehouse/us/(.*)
+          - /$1
+  - uri: /warehouse/eu*
+    upstream_id: 5
+    plugins:
+      proxy-rewrite:
+        regex_uri:
+          - ^/warehouse/eu/(.*)
+          - /$1
+  - uris:
+    - /search
+    - /api/*
+    - /static/*
+    - /dependencies
+    - /trace/*
+    - /monitor
+    upstream_id: 1
+    plugins:
+      opentelemetry: null
+  - uri: /
+    upstream_id: 1
+    plugins:
+      opentelemetry: null
+      redirect:
+        uri: /search
+        ret_code: 301
+
+global_rules:
+  - id: 1
+    plugins:
+      opentelemetry:
+        sampler:
+          name: always_on
+        additional_attributes:
+          - http_x-otel-key
+          - remote_addr
+#END
