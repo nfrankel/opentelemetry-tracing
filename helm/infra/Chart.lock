@@ -1,0 +1,12 @@
+dependencies:
+- name: opentelemetry-collector
+  repository: https://open-telemetry.github.io/opentelemetry-helm-charts
+  version: 0.109.0
+- name: traefik
+  repository: https://traefik.github.io/charts
+  version: 33.0.0
+- name: redis
+  repository: https://charts.bitnami.com/bitnami
+  version: 20.3.0
+digest: sha256:7f5bcd10b9e24ad3a53959be07485d64e4b3a0b8794d4d807774d3a1a1b92a43
+generated: "2024-11-20T09:03:13.008143+01:00"

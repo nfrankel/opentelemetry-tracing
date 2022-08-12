@@ -1,0 +1,72 @@
+opentelemetry-collector:
+  image:
+    repository: "otel/opentelemetry-collector-k8s"
+  fullnameOverride: collector
+  enabled: true
+  mode: deployment
+  serviceAccount:
+    create: false
+  ports:
+    jaeger-compact:
+      enabled: false
+    jaeger-thrift:
+      enabled: false
+    jaeger-grpc:
+      enabled: false
+    zipkin:
+      enabled: false
+  config:
+    processors:
+      batch: {}
+      attributes:
+        actions:
+          - key: cluster
+            value: host
+            action: upsert
+    exporters:
+      debug:
+        sampling_initial: 1
+        sampling_thereafter: 50
+      otlp:
+        endpoint: jaeger:4317
+        tls:
+          insecure: true
+    service:
+      pipelines:
+        traces:
+          receivers: 
+            - otlp
+          processors:
+            - batch
+            - attributes
+          exporters:
+            - otlp
+
+traefik:
+  fullnameOverride: traefik
+  deployment:
+    replicas: 1
+  gateway:
+    enabled: false
+  rbac:
+    enabled: true
+  ports:
+    web:
+      nodePort: 30080
+  tracing:
+    otlp:
+      enabled: true
+      grpc:
+        enabled: true
+        endpoint: collector:4317
+        insecure: true
+
+redis:
+  architecture: standalone
+  fullnameOverride: redis
+  auth:
+    enabled: false
+  master:
+    kind: Deployment
+    persistence:
+      enabled: false
