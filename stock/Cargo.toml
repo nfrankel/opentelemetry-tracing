@@ -1,0 +1,24 @@
+[package]
+name = "stock"
+version = "1.0.0"
+edition = "2021"
+
+[dependencies]
+axum = "0.6"
+tokio = { version = "1.29", features = ["full"] }
+serde = { version = "1.0", features = ["derive"] }
+rand = "0.8"
+rand_distr = "0.4"
+axum-tracing-opentelemetry = "0.12"
+init-tracing-opentelemetry = { version = "0.12.0", features = ["otlp", "tracing_subscriber_ext"] }
+opentelemetry = { version = "0.19", features = ["rt-tokio"] }
+opentelemetry-otlp = { version = "0.12", features = ["reqwest-client"] }
+tower = "0.4"
+tower-http = "0.4"
+tracing = "0.1"
+tracing-opentelemetry = "0.19"
+tracing-subscriber = { version = "0.3", features = [
+    "env-filter",
+    "fmt",
+    "json"
+] }
