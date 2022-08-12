@@ -1,0 +1,113 @@
+services:
+  jaeger:
+    image: jaegertracing/all-in-one:1.60
+    environment:
+      COLLECTOR_OTLP_ENABLED: true
+    ports:
+      - "9080:16686"
+  krakend:
+    image: devopsfaith/krakend:2.7
+    command:
+      - run
+      - -c
+      - krakend.yaml
+    volumes:
+      - ./config/krakend/krakend.yml:/etc/krakend/krakend.yaml:ro
+    ports:
+      - "8080:8080"
+    depends_on:
+      - catalog
+  catalog:
+    build: ./catalog
+    environment:
+      SPRING_R2DBC_URL: r2dbc:postgresql://postgres:5432/postgres?schema=catalog
+      SPRING_R2DBC_USERNAME: postgres
+      SPRING_R2DBC_PASSWORD: root
+      APP_PRICING_ENDPOINT: http://krakend:8080/prices
+      APP_STOCK_ENDPOINT: http://inventory:3000/stocks
+      SPRING_DATA_REDIS_HOST: redis
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://jaeger:4318
+      OTEL_SERVICE_NAME: catalog
+      OTEL_METRICS_EXPORTER: none
+      OTEL_LOGS_EXPORTER: none
+    depends_on:
+      - postgres
+      - pricing
+      - inventory
+  pricing:
+    build: ./pricing
+    environment:
+      FLASK_SQLALCHEMY_DATABASE_URI: postgresql://postgres:root@postgres:5432/postgres?options=-c%20search_path=pricing
+      FLASK_SQLALCHEMY_TRACK_MODIFICATIONS: False
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://jaeger:4317
+      OTEL_SERVICE_NAME: pricing
+      OTEL_METRICS_EXPORTER: none
+      OTEL_LOGS_EXPORTER: none
+    depends_on:
+      - postgres
+    restart: on-failure:2
+  inventory:
+    build: ./inventory
+    environment:
+      WAREHOUSE__0__ENDPOINT: http://warehouse-us:8000
+      WAREHOUSE__0__COUNTRY: USA
+      WAREHOUSE__1__ENDPOINT: http://warehouse-eu:8080
+      WAREHOUSE__2__ENDPOINT: http://warehouse-jp:8080
+      WAREHOUSE__2__COUNTRY: Japan
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://jaeger:4317
+      OTEL_SERVICE_NAME: inventory
+      OTEL_METRICS_EXPORTER: none
+      OTEL_LOGS_EXPORTER: none
+    depends_on:
+      - warehouse-us
+      - warehouse-eu
+      - warehouse-jp
+  warehouse-us:
+    image: ./warehouse-us
+    environment:
+      PG_HOST: postgres
+      PG_PORT: 5432
+      PG_USER: postgres
+      PG_PASSWORD: root
+      PG_DBNAME: postgres
+      GIN_MODE: release
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://jaeger:4317
+      OTEL_SERVICE_NAME: stocks USA
+      OTEL_METRICS_EXPORTER: none
+      OTEL_LOGS_EXPORTER: none
+    depends_on:
+      - postgres
+    restart: on-failure:5
+  warehouse-eu:
+    image: ./warehouse-eu
+    environment:
+      SPRING_R2DBC_URL: r2dbc:postgresql://postgres:5432/postgres?schema=warehouse_eu
+      SPRING_R2DBC_USERNAME: postgres
+      SPRING_R2DBC_PASSWORD: root
+      MANAGEMENT_OTLP_TRACING_ENDPOINT: http://jaeger:4318/v1/traces
+      SPRING_APPLICATION_NAME: stocks Europe
+    depends_on:
+      - postgres
+  warehouse-jp:
+    image: ./warehouse-jp
+    environment:
+      PG_HOST: postgres
+      PG_PORT: 5432
+      PG_USER: postgres
+      PG_PASSWORD: root
+      PG_DBNAME: postgres
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://jaeger:4318
+      OTEL_SERVICE_NAME: stocks Japan
+      OTEL_METRICS_EXPORTER: none
+      OTEL_LOGS_EXPORTER: none
+    depends_on:
+      - postgres
+    restart: on-failure:3
+  postgres:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_PASSWORD: root
+    volumes:
+      - ./config/postgres:/docker-entrypoint-initdb.d:ro
+  redis:
+    image: redis:7.4-alpine

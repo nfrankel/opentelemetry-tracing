@@ -1,0 +1,45 @@
+{{- with .Values }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .services.tracing.name }}
+  namespace: {{ include "otel.namespace" . }}
+  labels:
+    type: infra
+    observability: {{ .services.tracing.name }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      observability: {{ .services.tracing.name }}
+  template:
+    metadata:
+      labels:
+        type: infra
+        observability: {{ .services.tracing.name }}
+    spec:
+      containers:
+        - name: {{ .services.tracing.name }}
+          image: {{ .services.tracing.image }}
+          env:
+            - name: COLLECTOR_OTLP_ENABLED
+              value: "true"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .services.tracing.host }}
+  namespace: {{ include "otel.namespace" . }}
+spec:
+  type: NodePort
+  ports:
+    - name: frontend
+      port: 16686
+      nodePort: {{ .services.tracing.ports.host_ui }}
+    - name: otel-grpc
+      port: {{ .services.tracing.ports.grpc }}
+    - name: otel-http
+      port: {{ .services.tracing.ports.http }}
+  selector:
+    observability: {{ .services.tracing.name }}
+{{- end }}

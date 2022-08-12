@@ -1,0 +1,44 @@
+apps:
+  catalog:
+    image: otel-catalog:1.0
+    name: catalog
+    host: catalog
+    port: 8080
+  pricing:
+    image: otel-pricing:1.0
+    name: pricing
+    host: pricing
+    port: 8000
+  inventory:
+    image: otel-inventory:1.0
+    name: inventory
+    host: inventory
+    port: 3000
+  collector:
+    image: otel/opentelemetry-collector:0.113.0
+    name: collector
+    host: collector
+    ports:
+      http: 4318
+      grpc: 4317
+  warehouses:
+    eu:
+      image: otel-warehouse-eu:1.0
+      name: warehouse-eu
+      host: warehouse-eu
+      port: 8080
+    jp:
+      image: otel-warehouse-jp:1.0
+      name: warehouse-jp
+      host: warehouse-jp
+      port: 8080
+    us:
+      image: otel-warehouse-us:1.0
+      name: warehouse-us
+      host: warehouse-us
+      port: 8000
+  analytics:
+    image: otel-analytics:1.0
+    name: analytics
+    port: 8080
+    queue_name: analytics

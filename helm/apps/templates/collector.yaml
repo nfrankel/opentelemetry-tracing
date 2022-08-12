@@ -1,0 +1,82 @@
+{{- with .Values }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .apps.collector.name }}
+  namespace: {{ include "otel.namespace" . }}
+  labels:
+    type: infra
+    observability: {{ .apps.collector.name }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      observability: {{ .apps.collector.name }}
+  template:
+    metadata:
+      labels:
+        type: infra
+        observability: {{ .apps.collector.name }}
+    spec:
+      containers:
+        - name: {{ .apps.collector.name }}
+          image: {{ .apps.collector.image }}
+          env:
+            - name: OTEL_EXPORTER_OTLP_TRACES_INSECURE
+              value: "true"
+          volumeMounts:
+            - name: config
+              mountPath: /etc/otelcol
+      volumes:
+        - name: config
+          configMap:
+            name: collector-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .apps.collector.host }}
+  namespace: {{ include "otel.namespace" . }}
+spec:
+  type: ClusterIP
+  ports:
+    - name: collector-grpc
+      port: {{ .apps.collector.ports.grpc }}
+    - name: collector-http
+      port: {{ .apps.collector.ports.http }}
+  selector:
+    observability: collector
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: {{ include "otel.namespace" . }}
+  name: collector-config
+data:
+  config.yaml: |
+    receivers:
+      otlp:
+        protocols:
+          grpc:
+            endpoint: "0.0.0.0:{{ .apps.collector.ports.grpc }}"
+          http:
+            endpoint: "0.0.0.0:{{ .apps.collector.ports.http }}"
+    processors:
+      batch:
+      attributes:
+        actions:
+          - key: cluster
+            value: virtual
+            action: upsert
+    exporters:
+      otlp:
+        endpoint: {{ .services.tracing.host }}:{{ .services.tracing.ports.grpc }}
+        tls:
+          insecure: true
+    service:
+      pipelines:
+        traces:
+          receivers: [otlp]
+          processors: [batch,attributes]
+          exporters: [otlp]
+{{- end }}

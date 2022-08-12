@@ -1,0 +1,34 @@
+services:
+  database:
+    name: postgres
+    image: postgres:17-alpine
+    host: postgres
+    port: 5432
+    user: postgres
+    password: root
+    dbname: postgres
+  cache:
+    name: redis
+    image: redis:7.4-alpine
+    host: redis
+    port: 6379
+  tracing:
+    name: jaeger
+    image: jaegertracing/all-in-one:1.60
+    host: jaeger
+    ports:
+      host_ui: 31686
+      grpc: 4317
+      http: 4318
+  ingress:
+    name: traefik
+    image: traefik:3.2
+    host: traefik
+    ports:
+      host_http: 30080
+      http: 80
+  mq:
+    name: mosquitto
+    image: eclipse-mosquitto:2.0
+    host: mosquitto
+    port: 1883

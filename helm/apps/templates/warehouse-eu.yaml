@@ -1,0 +1,55 @@
+{{- with .Values }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .apps.warehouses.eu.name }}
+  namespace: {{ include "otel.namespace" . }}
+  labels:
+    type: app
+    location: eu
+    app: {{ .apps.warehouses.eu.name }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .apps.warehouses.eu.name }}
+  template:
+    metadata:
+      labels:
+        type: app
+        location: eu
+        app: {{ .apps.warehouses.eu.name }}
+    spec:
+      containers:
+        - name: warehouse-us
+          image: {{ .apps.warehouses.eu.image }}
+          env:
+            - name: SPRING_R2DBC_URL
+              value: r2dbc:postgresql://{{ .services.database.host }}:{{ .services.database.port }}/{{ .services.database.dbname }}?schema=warehouse_eu
+            - name: SPRING_R2DBC_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: secrets
+                  key: POSTGRES_USER
+            - name: SPRING_R2DBC_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: secrets
+                  key: POSTGRES_PASSWORD
+            - name: MANAGEMENT_OTLP_TRACING_ENDPOINT
+              value: http://{{ .apps.collector.host }}:{{ .apps.collector.ports.http }}/v1/traces
+            - name: SPRING_APPLICATION_NAME
+              value: stocks Europe
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .apps.warehouses.eu.host }}
+  namespace: {{ include "otel.namespace" . }}
+spec:
+  type: NodePort
+  ports:
+    - port: {{ .apps.warehouses.eu.port }}
+  selector:
+    app: {{ .apps.warehouses.eu.name }}
+{{- end }}

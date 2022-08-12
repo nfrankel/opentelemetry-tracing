@@ -1,0 +1,53 @@
+{{- with .Values }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mosquitto
+  namespace: {{ include "otel.namespace" . }}
+  labels:
+    type: infra
+    mq: {{ .services.mq.name }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      mq: {{ .services.mq.name }}
+  template:
+    metadata:
+      labels:
+        type: infra
+        mq: {{ .services.mq.name }}
+    spec:
+      containers:
+        - name: {{ .services.mq.name }}
+          image: {{ .services.mq.image }}
+          volumeMounts:
+            - name: config
+              mountPath: /mosquitto/config
+      volumes:
+        - name: config
+          configMap:
+            name: mosquitto-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .services.mq.name }}
+  namespace: {{ include "otel.namespace" . }}
+spec:
+  type: ClusterIP
+  ports:
+    - port: {{ .services.mq.port }}
+  selector:
+    mq: {{ .services.mq.name }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: {{ include "otel.namespace" . }}
+  name: mosquitto-config
+data:
+  mosquitto.conf: |
+    listener {{ .services.mq.port }}
+    allow_anonymous true
+{{- end }}

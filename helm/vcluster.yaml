@@ -1,0 +1,17 @@
+networking:
+  replicateServices:
+    fromHost:
+      - from: otel/postgres
+        to: default/postgres
+      - from: otel/redis
+        to: default/redis
+      - from: otel/jaeger
+        to: default/jaeger
+      - from: otel/traefik
+        to: default/traefik
+      - from: otel/mosquitto
+        to: default/mosquitto
+sync:
+  toHost:
+    ingresses:
+      enabled: true

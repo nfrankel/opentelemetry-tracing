@@ -1,0 +1,8 @@
+services:
+  collector:
+    image: otel/opentelemetry-collector:0.113.0
+    name: collector
+    host: collector
+    ports:
+      http: 4318
+      grpc: 4317
