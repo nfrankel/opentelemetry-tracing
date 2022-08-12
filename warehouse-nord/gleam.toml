@@ -1,0 +1,14 @@
+name = "warehouse_nord"
+version = "1.0.0"
+
+target = "erlang"
+
+[dependencies]
+envoy = "~> 1.0"
+gleam_erlang = "~> 1.0"
+gleam_http = "~> 4.0"
+gleam_json = "~> 3.0"
+gleam_stdlib = "~> 0.45"
+glotel = "~> 0.1"
+mist = "~> 5.0"
+pog = "~> 4.1"
