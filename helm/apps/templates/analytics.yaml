@@ -1,0 +1,37 @@
+{{- with .Values }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: analytics
+  namespace: {{ include "otel.namespace" . }}
+  labels:
+    type: app
+    app: analytics
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: analytics
+  template:
+    metadata:
+      labels:
+        type: app
+        app: analytics
+    spec:
+      containers:
+        - name: analytics
+          image: {{ .apps.analytics.image }}
+          env:
+            - name: MQTT_CLIENT_ID
+              value: analytics
+            - name: MQTT_CONNECT_TIMEOUT
+              value: "10"
+            - name: MQTT_SERVER_URI
+              value: tcp://messages:1883
+            - name: MQTT_TOPIC
+              value: analytics
+            - name: COLLECTOR_URI
+              value: http://collector:4318
+            - name: OTEL_SERVICE_NAME
+              value: analytics
+{{- end }}

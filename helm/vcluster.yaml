@@ -1,0 +1,15 @@
+networking:
+  replicateServices:
+    fromHost:
+      - from: otel/valkey-primary
+        to: default/cache
+      - from: otel/jaeger-collector
+        to: default/tracing
+      - from: otel/traefik
+        to: default/ingress
+      - from: otel/mosquitto
+        to: default/messages
+sync:
+  toHost:
+    ingresses:
+      enabled: true
