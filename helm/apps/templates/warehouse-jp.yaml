@@ -1,0 +1,65 @@
+{{- with .Values }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: warehouse-jp
+  namespace: {{ include "otel.namespace" . }}
+  labels:
+    type: app
+    location: jp
+    app: warehouse-jp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: warehouse-jp
+  template:
+    metadata:
+      labels:
+        type: app
+        location: jp
+        app: warehouse-jp
+    spec:
+      containers:
+        - name: warehouse-jp
+          image: {{ .apps.warehouses.jp.image }}
+          env:
+            - name: PG_HOST
+              value: postgres
+            - name: PG_PORT
+              value: "5432"
+            - name: PG_USER
+              valueFrom:
+                secretKeyRef:
+                  name: secrets
+                  key: POSTGRES_USER
+            - name: PG_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: secrets
+                  key: POSTGRES_PASSWORD
+            - name: PG_DBNAME
+              value: postgres
+            - name: APP_ENV
+              value: production
+            - name: OTEL_EXPORTER_OTLP_ENDPOINT
+              value: http://collector:4318
+            - name: OTEL_SERVICE_NAME
+              value: stocks Japan
+            - name: OTEL_METRICS_EXPORTER
+              value: none
+            - name: OTEL_LOGS_EXPORTER
+              value: none
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: warehouse-jp
+  namespace: {{ include "otel.namespace" . }}
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8080
+  selector:
+    app: warehouse-jp
+{{- end }}
