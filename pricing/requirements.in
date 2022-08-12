@@ -1,0 +1,4 @@
+Flask==2.3.3
+SQLAlchemy==2.0.25
+Flask-SQLAlchemy
+psycopg2-binary
