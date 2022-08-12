@@ -1,0 +1,2 @@
+app:
+  pricing.endpoint: http://localhost:5000/price
