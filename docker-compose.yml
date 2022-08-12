@@ -1,0 +1,37 @@
+version: "3"
+
+services:
+  jaeger:
+    image: jaegertracing/all-in-one:latest
+    environment:
+      - COLLECTOR_OTLP_ENABLED=true
+    ports:
+      - "16686:16686"
+      - "4317"
+      - "4318"
+  apisix:
+    image: apache/apisix:2.14.1-alpine
+    volumes:
+      - ./apisix/config.yml:/usr/local/apisix/conf/config.yaml:ro
+      - ./apisix/apisix.yml:/usr/local/apisix/conf/apisix.yaml:ro
+    ports:
+      - "9080:9080"
+  catalog:
+    build: ./catalog
+    environment:
+      APP_PRICING_ENDPOINT: http://pricing:5000/price
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://jaeger:4317
+      OTEL_RESOURCE_ATTRIBUTES: service.name=orders
+      OTEL_METRICS_EXPORTER: none
+      OTEL_LOGS_EXPORTER: none
+    ports:
+      - "8080"
+  pricing:
+    build: ./pricing
+    environment:
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://jaeger:4317
+      OTEL_RESOURCE_ATTRIBUTES: service.name=pricing
+      OTEL_METRICS_EXPORTER: none
+      OTEL_LOGS_EXPORTER: none
+    ports:
+      - "5000"

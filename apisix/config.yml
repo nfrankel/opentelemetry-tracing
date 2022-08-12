@@ -1,0 +1,12 @@
+apisix:
+  enable_admin: false
+  config_center: yaml
+plugins:
+  - opentelemetry
+plugin_attr:
+  opentelemetry:
+    resource:
+      service.name: APISIX
+    collector:
+      address: jaeger:4318
+      request_timeout: 3
