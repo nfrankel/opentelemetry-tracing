@@ -1,0 +1,42 @@
+version: "3"
+
+services:
+  jaeger:
+    image: jaegertracing/all-in-one:1.47
+    environment:
+      - COLLECTOR_OTLP_ENABLED=true
+  apisix:
+    image: apache/apisix:3.4.1-debian
+    volumes:
+      - ./apisix/config.yml:/usr/local/apisix/conf/config.yaml:ro
+      - ./apisix/apisix.yml:/usr/local/apisix/conf/apisix.yaml:ro
+    ports:
+      - "9080:9080"
+    depends_on:
+      - catalog
+  catalog:
+    image: otel-catalog:1.0
+    environment:
+      APP_PRICING_ENDPOINT: http://apisix:9080/prices
+      APP_STOCK_ENDPOINT: http://stock:3000/stocks
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://jaeger:4317
+      OTEL_RESOURCE_ATTRIBUTES: service.name=catalog
+      OTEL_METRICS_EXPORTER: none
+      OTEL_LOGS_EXPORTER: none
+    depends_on:
+      - pricing
+      - stock
+  pricing:
+    image: otel-pricing:1.0
+    environment:
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://jaeger:4317
+      OTEL_RESOURCE_ATTRIBUTES: service.name=pricing
+      OTEL_METRICS_EXPORTER: none
+      OTEL_LOGS_EXPORTER: none
+  stock:
+    image: otel-stock:1.0
+    environment:
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://jaeger:4317
+      OTEL_RESOURCE_ATTRIBUTES: service.name=stock
+      OTEL_METRICS_EXPORTER: none
+      OTEL_LOGS_EXPORTER: none
