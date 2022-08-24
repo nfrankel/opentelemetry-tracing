@@ -2,8 +2,10 @@ from random import uniform
 from typing import Dict
 from flask import Flask, abort, jsonify
 from flask_sqlalchemy import SQLAlchemy
+from opentelemetry import trace
 
 
+tracer = trace.get_tracer(__name__)
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///./prices.sqlite'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -22,7 +24,8 @@ class Price(db.Model):
 @app.route('/price/<product_str>')
 def price(product_str: str) -> Dict[str, object]:
     product_id = int(product_str)
-    price: Price = Price.query.get(product_id)
+    with tracer.start_as_current_span("SELECT * FROM PRICE WHERE ID=:id", attributes={":id": product_id}) as span:
+        price: Price = Price.query.get(product_id)
     if price is None:
         return jsonify({'error': 'Product not found'}), 404
     else:
