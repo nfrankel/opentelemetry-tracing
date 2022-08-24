@@ -1,5 +1,7 @@
 package ch.frankel.blog;
 
+import io.opentelemetry.instrumentation.annotations.SpanAttribute;
+import io.opentelemetry.instrumentation.annotations.WithSpan;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
@@ -28,7 +30,8 @@ public class StockLevelResource {
 
     @GET
     @Path("/{id}")
-    public List<StockLevel> stockLevels(@PathParam("id") Long id) {
+    @WithSpan
+    public List<StockLevel> stockLevels(@PathParam("id") @SpanAttribute("id") Long id) {
         return repository.findByProductId(id);
     }
 }
