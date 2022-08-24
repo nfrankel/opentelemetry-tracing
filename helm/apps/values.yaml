@@ -1,8 +1,8 @@
 apps:
   catalog:
-    image: otel-catalog:1.0
+    image: otel-catalog:1.1
   pricing:
-    image: otel-pricing:1.0
+    image: otel-pricing:1.1
   inventory:
     image: otel-inventory:1.0
   warehouses:
