@@ -1,5 +1,7 @@
 package ch.frankel.catalog
 
+import io.opentelemetry.instrumentation.annotations.SpanAttribute
+import io.opentelemetry.instrumentation.annotations.WithSpan
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
@@ -22,14 +24,16 @@ class ProductHandler(private val repository: ProductRepository, private val prop
     private val logger = LoggerFactory.getLogger(ProductHandler::class.java)
     private val client = WebClient.builder().build()
 
+    @WithSpan("ProductHandler.products")
     suspend fun products(req: ServerRequest): ServerResponse {
         printHeader(req)
         val products = repository.findAll().map {
-            fetchProductDetails(it)
+            fetchProductDetails(it.id, it)
         }
         return ServerResponse.ok().bodyAndAwait(products)
     }
 
+    @WithSpan("ProductHandler.product")
     suspend fun product(req: ServerRequest): ServerResponse {
         printHeader(req)
         val idString = req.pathVariable("id")
@@ -37,14 +41,15 @@ class ProductHandler(private val repository: ProductRepository, private val prop
             ?: return ServerResponse.badRequest().bodyValueAndAwait("$idString is not a valid ID")
         return find(id).fold(
             {
-                val productWithDetails = fetchProductDetails(it)
+                val productWithDetails = fetchProductDetails(it.id, it)
                 ServerResponse.ok().bodyValueAndAwait(productWithDetails)
             },
             { ServerResponse.notFound().buildAndAwait() }
         )
     }
 
-    private suspend fun fetchProductDetails(product: Product) = coroutineScope {
+    @WithSpan("ProductHandler.fetch")
+    private suspend fun fetchProductDetails(@SpanAttribute("id") id: Long, product: Product) = coroutineScope {
         val price = async(Dispatchers.IO) {
             client.get().uri("${props.pricingEndpoint}/${product.id}").retrieve().bodyToMono<Price>().awaitSingle()
         }
