@@ -7,20 +7,20 @@ infra:
 
 apps:
   catalog:
-    image: otel-catalog:1.0
+    image: otel-catalog:1.1
   pricing:
-    image: otel-pricing:1.0
+    image: otel-pricing:1.1
   inventory:
     image: otel-inventory:1.0
   warehouses:
     eu:
-      image: otel-warehouse-eu:1.0
+      image: otel-warehouse-eu:1.1
     jp:
       image: otel-warehouse-jp:1.0
     us:
       image: otel-warehouse-us:1.0
     uk:
-      image: otel-warehouse-uk:1.0
+      image: otel-warehouse-uk:1.1
   analytics:
     image: otel-analytics:1.0
   recommendations:

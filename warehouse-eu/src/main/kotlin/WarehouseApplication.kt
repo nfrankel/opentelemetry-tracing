@@ -1,5 +1,7 @@
 package ch.frankel.blog
 
+import io.micrometer.tracing.annotation.NewSpan
+import io.micrometer.tracing.annotation.SpanTag
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 import org.springframework.web.bind.annotation.GetMapping
@@ -15,7 +17,8 @@ class StockLevelController(private val repository: StockLevelRepository) {
     fun stockLevels(): Flux<StockLevel> = repository.findAll()
 
     @GetMapping("/stocks/{id}")
-    suspend fun stockLevel(@PathVariable("id") id: Long) = repository.findByIdWithWarehouse(id)
+    @NewSpan
+    suspend fun stockLevel(@PathVariable("id") @SpanTag("productId") id: Long) = repository.findByIdWithWarehouse(id)
 }
 
 @SpringBootApplication(proxyBeanMethods = false)
