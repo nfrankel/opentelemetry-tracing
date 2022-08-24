@@ -2,3 +2,5 @@ Flask==2.3.3
 SQLAlchemy==2.0.21
 Flask-SQLAlchemy
 psycopg2-binary
+opentelemetry-distro==0.41b0
+opentelemetry-exporter-otlp
