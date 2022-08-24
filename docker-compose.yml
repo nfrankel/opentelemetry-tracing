@@ -13,7 +13,7 @@ services:
     depends_on:
       - catalog
   catalog:
-    image: otel-catalog:1.0
+    image: otel-catalog:1.1
     environment:
       SPRING_R2DBC_URL: r2dbc:postgresql://postgres:5432/postgres?schema=catalog
       SPRING_R2DBC_USERNAME: postgres
@@ -29,7 +29,7 @@ services:
       - pricing
       - inventory
   pricing:
-    image: otel-pricing:1.0
+    image: otel-pricing:1.1
     environment:
       FLASK_SQLALCHEMY_DATABASE_URI: postgresql://postgres:root@postgres:5432/postgres?options=-c%20search_path=pricing
       FLASK_SQLALCHEMY_TRACK_MODIFICATIONS: False
