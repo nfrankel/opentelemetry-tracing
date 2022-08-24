@@ -1,6 +1,8 @@
 package ch.frankel.blog
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import io.micrometer.tracing.annotation.NewSpan
+import io.micrometer.tracing.annotation.SpanTag
 import org.springframework.data.annotation.Id
 import org.springframework.data.relational.core.mapping.Table
 import org.springframework.data.repository.reactive.ReactiveCrudRepository
@@ -29,7 +31,8 @@ class CustomStockLevelRepositoryImpl(private val client: DatabaseClient) : Custo
             WHERE s.product_id = :productId
             """.trimIndent()
 
-    override fun findByIdWithWarehouse(productId: Long): Flux<StockLevel> {
+    @NewSpan
+    override fun findByIdWithWarehouse(@SpanTag("productId") productId: Long): Flux<StockLevel> {
         return client.sql(query)
             .bind("productId", productId)
             .fetch()
