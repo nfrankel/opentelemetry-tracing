@@ -2,7 +2,9 @@ from random import uniform
 
 from flask import Flask, jsonify, Response
 from flask_sqlalchemy import SQLAlchemy
+from opentelemetry import trace
 
+tracer = trace.get_tracer(__name__)
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///./prices.sqlite'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -35,8 +37,9 @@ with app.app_context():
 @app.route('/prices/<product_str>')
 def price(product_str: str) -> tuple[Response, int]:
     product_id = int(product_str)
-    _price: Price = Price.query.get(product_id)
-    if price is None:
+    with tracer.start_as_current_span("SELECT * FROM PRICE WHERE ID=:id", attributes={":id": product_id}):
+        _price: Price = Price.query.get(product_id)
+    if _price is None:
         return jsonify({'error': 'Product not found'}), 404
     else:
         low: float = _price.value - _price.jitter
