@@ -4,7 +4,9 @@ from typing import Any, Optional
 
 from flask import Flask, jsonify, Response
 from flask_sqlalchemy import SQLAlchemy
+from opentelemetry import trace
 
+tracer = trace.get_tracer(__name__)
 app = Flask(__name__)
 app.config.from_prefixed_env()
 db = SQLAlchemy()
@@ -31,6 +33,11 @@ class Price(db.Model):
 
 @app.route('/prices/<int:product_id>')
 def price(product_id: int) -> tuple[Response, int]:
+    return __price(product_id)
+
+
+@tracer.start_as_current_span("SELECT * FROM prices WHERE product_id = ?")
+def __price(product_id: int) -> tuple[Response, int]:
     price: Optional[Price] = Price.query.get(product_id)
     if price is None:
         return jsonify({'error': 'Product not found'}), 404

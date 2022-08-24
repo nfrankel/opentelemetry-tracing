@@ -1,6 +1,8 @@
 package ch.frankel.catalog
 
 import kotlinx.coroutines.CoroutineDispatcher
+import io.opentelemetry.instrumentation.annotations.SpanAttribute
+import io.opentelemetry.instrumentation.annotations.WithSpan
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
@@ -35,14 +37,16 @@ class ProductHandler(
     private val logger = LoggerFactory.getLogger(ProductHandler::class.java)
     private val client = WebClient.builder().build()
 
+    @WithSpan
     suspend fun products(req: ServerRequest): ServerResponse {
         printHeader(req)
         val products = repository.findAll().map {
-            fetchProductDetails(it)
+            fetchProductDetails(it.id, it)
         }
         return ServerResponse.ok().bodyAndAwait(products)
     }
 
+    @WithSpan
     suspend fun product(req: ServerRequest): ServerResponse {
         printHeader(req)
         val idString = req.pathVariable("id")
@@ -50,23 +54,24 @@ class ProductHandler(
             ?: return ServerResponse.badRequest().bodyValueAndAwait("$idString is not a valid ID")
         return find(id).fold(
             {
-                val productWithDetails = fetchProductDetails(it)
+                val productWithDetails = fetchProductDetails(it.id, it)
                 ServerResponse.ok().bodyValueAndAwait(productWithDetails)
             },
             { ServerResponse.notFound().buildAndAwait() }
         )
     }
 
-    private suspend fun fetchProductDetails(product: Product) = coroutineScope {
+    @WithSpan("ProductHandler.fetch")
+    private suspend fun fetchProductDetails(@SpanAttribute("productId") id: Long, product: Product) = coroutineScope {
         val recommendation = async(dispatcher) {
-            client.get().uri("${props.recommendationsEndpoint}/${product.id}").retrieve().bodyToMono<Recommendation>()
+            client.get().uri("${props.recommendationsEndpoint}/$id").retrieve().bodyToMono<Recommendation>()
                 .awaitSingle()
         }
         val price = async(dispatcher) {
             priceService.fetchPrice(product).awaitSingle()
         }
         val stocks = async(dispatcher) {
-            client.get().uri("${props.stockEndpoint}/${product.id}").retrieve().bodyToMono<Array<InStockLevel>>()
+            client.get().uri("${props.stockEndpoint}/$id").retrieve().bodyToMono<Array<InStockLevel>>()
                 .awaitSingle()
         }
         product.withDetails(price.await(), stocks.await(), recommendation.await())
