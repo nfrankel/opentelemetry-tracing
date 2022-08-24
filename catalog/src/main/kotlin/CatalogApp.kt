@@ -1,5 +1,7 @@
 package ch.frankel.catalog
 
+import io.opentelemetry.instrumentation.annotations.SpanAttribute
+import io.opentelemetry.instrumentation.annotations.WithSpan
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.reactor.awaitSingle
 import org.slf4j.LoggerFactory
@@ -32,12 +34,21 @@ class ProductHandler(private val repository: ProductRepository, private val clie
         val idString = req.pathVariable("id")
         val id = idString.toLongOrNull()
             ?: return ServerResponse.badRequest().bodyValueAndAwait("$idString is not a valid ID")
+        val result = fetch(id)
+        return result.fold(
+            {
+                val price = client.get().uri("/$id").retrieve().bodyToMono<Price>().awaitSingle()
+                ServerResponse.ok().bodyValueAndAwait(it.withPrice(price))
+            },
+            { ServerResponse.notFound().buildAndAwait() }
+        )
+    }
+
+    @WithSpan("ProductHandler.fetch")
+    suspend fun fetch(@SpanAttribute("id") id: Long): Result<Product> {
         val product = repository.findById(id)
-        return if (product == null) ServerResponse.notFound().buildAndAwait()
-        else {
-            val price = client.get().uri("/$id").retrieve().bodyToMono<Price>().awaitSingle()
-            ServerResponse.ok().bodyValueAndAwait(product.withPrice(price))
-        }
+        return if (product == null) Result.failure(IllegalArgumentException("Product $id not found"))
+        else Result.success(product)
     }
 
     private fun printHeader(req: ServerRequest) {
