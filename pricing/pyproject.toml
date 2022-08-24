@@ -11,6 +11,7 @@ Flask= "^2.3.3"
 SQLAlchemy = "^2.0.25"
 Flask-SQLAlchemy = "*"
 psycopg2-binary = "^2.9.9"
+opentelemetry-distro = {extras = ["otlp"], version = "^0.44b0" }
 
 [build-system]
 requires = ["poetry-core"]
