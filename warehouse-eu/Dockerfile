@@ -1,4 +1,4 @@
-#docker build -t otel-warehouse-eu:1.0 .
+#docker build -t otel-warehouse-eu:1.1 .
 FROM container-registry.oracle.com/graalvm/native-image:24 AS build
 
 COPY .mvn .mvn
