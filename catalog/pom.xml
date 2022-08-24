@@ -10,7 +10,7 @@
     </parent>
     <groupId>ch.frankel.blog</groupId>
     <artifactId>catalog</artifactId>
-    <version>1.0</version>
+    <version>1.1</version>
     <properties>
         <java.version>21</java.version>
         <kotlin.version>2.2.20</kotlin.version>
@@ -56,6 +56,11 @@
         <dependency>
             <groupId>org.jetbrains.kotlinx</groupId>
             <artifactId>kotlinx-coroutines-reactor</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.opentelemetry.instrumentation</groupId>
+            <artifactId>opentelemetry-instrumentation-annotations</artifactId>
+            <version>2.20.1</version>
         </dependency>
         <dependency>
             <groupId>io.lettuce</groupId>
