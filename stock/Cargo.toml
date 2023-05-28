@@ -13,7 +13,7 @@ axum-tracing-opentelemetry = { version = "0.7", features = ["otlp"] }
 opentelemetry = { version = "0.18", features = ["rt-tokio"] }
 opentelemetry-otlp = { version = "0.11", features = ["reqwest-client"] }
 tower = "0.4"
-tower-http = "0.3"
+tower-http = "0.4"
 tracing = "0.1"
 tracing-opentelemetry = "0.18"
 tracing-subscriber = { version = "0.3", features = [
