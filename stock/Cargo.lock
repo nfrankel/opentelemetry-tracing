@@ -762,6 +762,8 @@ dependencies = [
  "percent-encoding",
  "rand",
  "thiserror",
+ "tokio",
+ "tokio-stream",
 ]
 
 [[package]]
@@ -1165,7 +1167,7 @@ version = "1.0.0"
 dependencies = [
  "axum",
  "axum-tracing-opentelemetry",
- "opentelemetry 0.18.0",
+ "opentelemetry 0.19.0",
  "opentelemetry-otlp",
  "rand",
  "rand_distr",
