@@ -15,7 +15,7 @@ opentelemetry-otlp = { version = "0.11", features = ["reqwest-client"] }
 tower = "0.4"
 tower-http = "0.3"
 tracing = "0.1"
-tracing-opentelemetry = "0.18"
+tracing-opentelemetry = "0.19"
 tracing-subscriber = { version = "0.3", features = [
     "env-filter",
     "fmt",
