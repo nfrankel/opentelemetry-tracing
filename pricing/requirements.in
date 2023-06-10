@@ -1,5 +1,5 @@
 Flask==2.3.2
-SQLAlchemy==2.0.15
+SQLAlchemy==2.0.16
 Flask-SQLAlchemy
 opentelemetry-distro[otlp]==0.39b0
 opentelemetry-instrumentation==0.39b0
