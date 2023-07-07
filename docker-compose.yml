@@ -6,7 +6,7 @@ services:
     environment:
       - COLLECTOR_OTLP_ENABLED=true
   apisix:
-    image: apache/apisix:3.3.0-debian
+    image: apache/apisix:3.4.0-debian
     volumes:
       - ./apisix/config.yml:/usr/local/apisix/conf/config.yaml:ro
       - ./apisix/apisix.yml:/usr/local/apisix/conf/apisix.yaml:ro
