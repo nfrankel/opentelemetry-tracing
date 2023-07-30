@@ -11,7 +11,7 @@ rand = "0.8"
 rand_distr = "0.4"
 axum-tracing-opentelemetry = "0.12"
 init-tracing-opentelemetry = { version = "0.12.0", features = ["otlp", "tracing_subscriber_ext"] }
-opentelemetry = { version = "0.19", features = ["rt-tokio"] }
+opentelemetry = { version = "0.20", features = ["rt-tokio"] }
 opentelemetry-otlp = { version = "0.12", features = ["reqwest-client"] }
 tower = "0.4"
 tower-http = "0.4"
