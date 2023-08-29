@@ -112,7 +112,7 @@ dependencies = [
  "pin-project-lite",
  "tower",
  "tracing",
- "tracing-opentelemetry",
+ "tracing-opentelemetry 0.20.0",
  "tracing-opentelemetry-instrumentation-sdk",
 ]
 
@@ -446,7 +446,7 @@ dependencies = [
  "opentelemetry-semantic-conventions",
  "thiserror",
  "tracing",
- "tracing-opentelemetry",
+ "tracing-opentelemetry 0.20.0",
  "tracing-subscriber",
 ]
 
@@ -1093,7 +1093,7 @@ dependencies = [
  "tower",
  "tower-http",
  "tracing",
- "tracing-opentelemetry",
+ "tracing-opentelemetry 0.21.0",
  "tracing-subscriber",
 ]
 
@@ -1373,6 +1373,22 @@ dependencies = [
 ]
 
 [[package]]
+name = "tracing-opentelemetry"
+version = "0.21.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "75327c6b667828ddc28f5e3f169036cb793c3f588d83bf0f262a7f062ffed3c8"
+dependencies = [
+ "once_cell",
+ "opentelemetry",
+ "opentelemetry_sdk",
+ "smallvec",
+ "tracing",
+ "tracing-core",
+ "tracing-log",
+ "tracing-subscriber",
+]
+
+[[package]]
 name = "tracing-opentelemetry-instrumentation-sdk"
 version = "0.13.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1382,7 +1398,7 @@ dependencies = [
  "opentelemetry-http",
  "opentelemetry_api",
  "tracing",
- "tracing-opentelemetry",
+ "tracing-opentelemetry 0.20.0",
 ]
 
 [[package]]
