@@ -48,7 +48,7 @@
 		<dependency>
 			<groupId>io.opentelemetry.instrumentation</groupId>
 			<artifactId>opentelemetry-instrumentation-annotations</artifactId>
-			<version>1.29.0</version>
+			<version>1.30.0</version>
 		</dependency>
 		<dependency>
 			<groupId>com.h2database</groupId>
