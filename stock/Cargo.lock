@@ -100,9 +100,9 @@ dependencies = [
 
 [[package]]
 name = "axum-tracing-opentelemetry"
-version = "0.13.1"
+version = "0.14.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "7c8ad3d73e77ce712d52d620de73d2cbef4686328742e82bac94d5a616d05ccb"
+checksum = "06985105829f176e9a3f113b1c71cc24e08f600ef0df4e70cd90d144f889e19f"
 dependencies = [
  "axum",
  "futures-core",
@@ -112,7 +112,7 @@ dependencies = [
  "pin-project-lite",
  "tower",
  "tracing",
- "tracing-opentelemetry 0.20.0",
+ "tracing-opentelemetry",
  "tracing-opentelemetry-instrumentation-sdk",
 ]
 
@@ -446,7 +446,7 @@ dependencies = [
  "opentelemetry-semantic-conventions",
  "thiserror",
  "tracing",
- "tracing-opentelemetry 0.21.0",
+ "tracing-opentelemetry",
  "tracing-subscriber",
 ]
 
@@ -1093,7 +1093,7 @@ dependencies = [
  "tower",
  "tower-http",
  "tracing",
- "tracing-opentelemetry 0.21.0",
+ "tracing-opentelemetry",
  "tracing-subscriber",
 ]
 
@@ -1360,20 +1360,6 @@ dependencies = [
 
 [[package]]
 name = "tracing-opentelemetry"
-version = "0.20.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "fc09e402904a5261e42cf27aea09ccb7d5318c6717a9eec3d8e2e65c56b18f19"
-dependencies = [
- "once_cell",
- "opentelemetry",
- "tracing",
- "tracing-core",
- "tracing-log",
- "tracing-subscriber",
-]
-
-[[package]]
-name = "tracing-opentelemetry"
 version = "0.21.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "75327c6b667828ddc28f5e3f169036cb793c3f588d83bf0f262a7f062ffed3c8"
@@ -1390,15 +1376,15 @@ dependencies = [
 
 [[package]]
 name = "tracing-opentelemetry-instrumentation-sdk"
-version = "0.13.1"
+version = "0.14.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ad80bb643d9a70b13d10eb5d3241e2955afc880d3a7a15a40d6cc6f620091a02"
+checksum = "752ddd669b14a08036a89045e4ac4497ff7ce254e11386647751f36d7c7849ea"
 dependencies = [
  "http",
  "opentelemetry-http",
  "opentelemetry_api",
  "tracing",
- "tracing-opentelemetry 0.20.0",
+ "tracing-opentelemetry",
 ]
 
 [[package]]
