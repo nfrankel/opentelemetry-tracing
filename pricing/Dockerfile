@@ -1,5 +1,5 @@
 #docker build -t otel-pricing:1.1 .
-FROM python:3.11
+FROM python:3.12
 
 COPY requirements.in requirements.in
 
