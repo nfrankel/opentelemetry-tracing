@@ -1,4 +1,4 @@
-#docker build -t otel-catalog:1.1 .
+#docker build -t otel-catalog:1.2 .
 FROM eclipse-temurin:21-jdk-jammy AS build
 
 COPY .mvn .mvn
@@ -10,7 +10,7 @@ RUN --mount=type=cache,target=/root/.m2,rw ./mvnw package -DskipTests
 
 FROM eclipse-temurin:21-jre-jammy
 
-COPY --from=build target/catalog-1.1.jar catalog.jar
+COPY --from=build target/catalog-1.2.jar catalog.jar
 
 ADD https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases/download/v2.2.0/opentelemetry-javaagent.jar opentelemetry-javaagent.jar
 
