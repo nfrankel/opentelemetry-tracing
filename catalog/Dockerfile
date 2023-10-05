@@ -1,4 +1,4 @@
-#docker build -t otel-catalog:1.1 .
+#docker build -t otel-catalog:1.2 .
 FROM eclipse-temurin:21-jdk-jammy AS build
 
 COPY .mvn .mvn
@@ -12,7 +12,7 @@ FROM gcr.io/distroless/java21:nonroot
 
 WORKDIR /home/nonroot
 
-COPY --from=build target/catalog-1.1.jar catalog.jar
+COPY --from=build target/catalog-1.2.jar catalog.jar
 
 ADD --chmod=755 https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases/download/v2.15.0/opentelemetry-javaagent.jar opentelemetry-javaagent.jar
 
