@@ -33,12 +33,8 @@ class Price(db.Model):
 
 @app.route('/prices/<int:product_id>')
 def price(product_id: int) -> tuple[Response, int]:
-    return __price(product_id)
-
-
-@tracer.start_as_current_span("SELECT * FROM prices WHERE product_id = ?")
-def __price(product_id: int) -> tuple[Response, int]:
-    price: Optional[Price] = Price.query.get(product_id)
-    if price is None:
-        return jsonify({'error': 'Product not found'}), 404
-    return jsonify(price.serialize_to_view()), 200
+    with tracer.start_as_current_span("SELECT * FROM PRICE WHERE ID=productId", attributes={"productId": product_id}):
+        price: Optional[Price] = Price.query.get(product_id)
+        if price is None:
+            return jsonify({'error': 'Product not found'}), 404
+        return jsonify(price.serialize_to_view()), 200
