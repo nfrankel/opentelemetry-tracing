@@ -37,3 +37,4 @@ build/
 __pycache__
 node_modules
 .ruby-version
+dist
