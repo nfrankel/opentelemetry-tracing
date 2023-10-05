@@ -10,7 +10,7 @@ RUN --mount=type=cache,target=/root/.m2,rw ./mvnw package -DskipTests
 
 FROM eclipse-temurin:17-jre-jammy
 
-COPY --from=build target/catalog-1.1.jar catalog.jar
+COPY --from=build target/catalog-1.2.jar catalog.jar
 
 ADD https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases/download/v1.30.0/opentelemetry-javaagent.jar opentelemetry-javaagent.jar
 
