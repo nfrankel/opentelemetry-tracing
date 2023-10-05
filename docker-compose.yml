@@ -18,7 +18,7 @@ services:
     depends_on:
       - catalog
   catalog:
-    image: otel-catalog:1.1
+    image: otel-catalog:1.2
     environment:
       SPRING_R2DBC_URL: r2dbc:postgresql://postgres:5432/postgres?schema=catalog
       SPRING_R2DBC_USERNAME: postgres
@@ -26,16 +26,24 @@ services:
       APP_PRICING_ENDPOINT: http://krakend:8080/prices
       APP_STOCK_ENDPOINT: http://inventory:3000/stocks
       SPRING_DATA_REDIS_HOST: redis
+      APP_MQTT_SERVER_URI: tcp://mosquitto:1883
+      APP_MQTT_CLIENT_ID: catalog
+      APP_MQTT_TOPIC: analytics
+      APP_MQTT_MESSAGE_QOS: 1
+      APP_MQTT_MESSAGE_RETAINED: true
+      APP_MQTT_CONNECT_AUTOMATIC: true
+      APP_MQTT_CONNECT_TIMEOUT: 5
       OTEL_EXPORTER_OTLP_ENDPOINT: http://jaeger:4318
       OTEL_SERVICE_NAME: catalog
       OTEL_METRICS_EXPORTER: none
       OTEL_LOGS_EXPORTER: none
     depends_on:
       - postgres
+      - mosquitto
       - pricing
       - inventory
   pricing:
-    image: otel-pricing:1.1
+    image: otel-pricing:1.2
     environment:
       FLASK_SQLALCHEMY_DATABASE_URI: postgresql://postgres:root@postgres:5432/postgres?options=-c%20search_path=pricing
       FLASK_SQLALCHEMY_TRACK_MODIFICATIONS: False
@@ -103,6 +111,17 @@ services:
     depends_on:
       - postgres
     restart: on-failure:3
+  analytics:
+    image: otel-analytics:1.0
+    environment:
+      - COLLECTOR_URI=http://jaeger:4318
+      - MQTT_CLIENT_ID=analytics
+      - MQTT_CONNECT_TIMEOUT=10
+      - MQTT_SERVER_URI=tcp://mosquitto:1883
+      - MQTT_TOPIC=analytics
+      - OTEL_LOG_LEVEL=DEBUG
+    depends_on:
+      - mosquitto
   postgres:
     image: postgres:17-alpine
     environment:
@@ -111,3 +130,7 @@ services:
       - ./config/postgres:/docker-entrypoint-initdb.d:ro
   redis:
     image: redis:7.4-alpine
+  mosquitto:
+    image: eclipse-mosquitto:2.0
+    volumes:
+      - ./config/mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf:ro
