@@ -1,13 +1,16 @@
 package ch.frankel.catalog
 
-import kotlinx.coroutines.CoroutineDispatcher
+import io.opentelemetry.api.GlobalOpenTelemetry
+import io.opentelemetry.api.OpenTelemetry
 import io.opentelemetry.instrumentation.annotations.SpanAttribute
 import io.opentelemetry.instrumentation.annotations.WithSpan
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.reactor.awaitSingle
+import org.eclipse.paho.mqttv5.client.MqttClient
 import org.slf4j.LoggerFactory
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.context.properties.EnableConfigurationProperties
@@ -20,7 +23,11 @@ import org.springframework.web.reactive.function.server.*
 
 interface ProductRepository : CoroutineCrudRepository<Product, Long>
 
-class ProductHandler(private val repository: ProductRepository, private val props: AppProperties, private val dispatcher: CoroutineDispatcher) {
+class ProductHandler(
+    private val repository: ProductRepository,
+    private val props: AppProperties,
+    private val dispatcher: CoroutineDispatcher
+) {
 
     private val logger = LoggerFactory.getLogger(ProductHandler::class.java)
     private val client = WebClient.builder().build()
@@ -85,11 +92,18 @@ class ProductHandler(private val repository: ProductRepository, private val prop
 
 val beans = beans {
     bean {
+        val mqtt = ref<AppProperties>().mqtt
+        MqttClient(mqtt.serverUri, mqtt.clientId)
+    }
+    bean {
+        GlobalOpenTelemetry.get()
+    }
+    bean {
         val handler = ProductHandler(ref(), ref(), Dispatchers.IO)
         coRouter {
             GET("/products")(handler::products)
             GET("/products/{id}")(handler::product)
-        }
+        }.filter(AnalyticsFilter(ref(), ref<AppProperties>().mqtt, ref<OpenTelemetry>()))
     }
 }
 
