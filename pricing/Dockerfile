@@ -1,4 +1,4 @@
-#docker build -t otel-pricing:1.1 .
+#docker build -t otel-pricing:1.2 .
 FROM python:3.15-slim
 
 COPY pyproject.toml .

@@ -1,13 +1,15 @@
 package ch.frankel.catalog
 
-import kotlinx.coroutines.CoroutineDispatcher
+import io.opentelemetry.api.GlobalOpenTelemetry
 import io.opentelemetry.instrumentation.annotations.SpanAttribute
 import io.opentelemetry.instrumentation.annotations.WithSpan
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.reactor.awaitSingle
+import org.eclipse.paho.mqttv5.client.MqttClient
 import org.slf4j.LoggerFactory
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.context.properties.EnableConfigurationProperties
@@ -114,11 +116,13 @@ val beans = beans {
         PriceService(ref())
     }
     bean {
+        val mqtt = ref<AppProperties>().mqtt
+        val client = MqttClient(mqtt.serverUri, mqtt.clientId)
         val handler = ProductHandler(ref(), ref(), Dispatchers.IO, ref())
         coRouter {
             GET("/products")(handler::products)
             GET("/products/{id}")(handler::product)
-        }
+        }.filter(AnalyticsFilter(client, mqtt, GlobalOpenTelemetry.get()))
     }
 }
 
