@@ -2,6 +2,12 @@ deployment:
   role: data_plane
   role_data_plane:
     config_provider: yaml
+apisix:
+  proxy_mode: http&stream
+  stream_proxy:
+    tcp:
+      - addr: 9100
+        tls: false
 plugins:
   - opentelemetry
 plugin_attr:
