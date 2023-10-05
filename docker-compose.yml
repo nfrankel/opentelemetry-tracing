@@ -16,19 +16,27 @@ services:
     depends_on:
       - catalog
   catalog:
-    image: otel-catalog:1.1
+    image: otel-catalog:1.2
     environment:
       SPRING_R2DBC_URL: r2dbc:postgresql://postgres:5432/postgres?schema=catalog
       SPRING_R2DBC_USERNAME: postgres
       SPRING_R2DBC_PASSWORD: root
       APP_PRICING_ENDPOINT: http://apisix:9080/prices
       APP_STOCK_ENDPOINT: http://inventory:3000/stocks
+      APP_MQTT_SERVER_URI: tcp://apisix:9100
+      APP_MQTT_CLIENT_ID: catalog
+      APP_MQTT_TOPIC: analytics
+      APP_MQTT_MESSAGE_QOS: 1
+      APP_MQTT_MESSAGE_RETAINED: true
+      APP_MQTT_CONNECT_AUTOMATIC: true
+      APP_MQTT_CONNECT_TIMEOUT: 5
       OTEL_EXPORTER_OTLP_ENDPOINT: http://jaeger:4317
       OTEL_RESOURCE_ATTRIBUTES: service.name=catalog
       OTEL_METRICS_EXPORTER: none
       OTEL_LOGS_EXPORTER: none
     depends_on:
       - postgres
+      - mosquitto
       - pricing
       - inventory
   pricing:
@@ -55,9 +63,24 @@ services:
       OTEL_RESOURCE_ATTRIBUTES: service.name=inventory
       OTEL_METRICS_EXPORTER: none
       OTEL_LOGS_EXPORTER: none
+  analytics:
+    image: otel-analytics:1.0
+    environment:
+      - COLLECTOR_URI=http://jaeger:4318
+      - MQTT_CLIENT_ID=analytics
+      - MQTT_CONNECT_TIMEOUT=10
+      - MQTT_SERVER_URI=tcp://apisix:9100
+      - MQTT_TOPIC=analytics
+      - OTEL_LOG_LEVEL=DEBUG
+    depends_on:
+      - mosquitto
   postgres:
     image: postgres:16-alpine
     environment:
       POSTGRES_PASSWORD: root
     volumes:
       - ./config/postgres:/docker-entrypoint-initdb.d:ro
+  mosquitto:
+    image: eclipse-mosquitto:2.0
+    volumes:
+      - ./config/mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf:ro
