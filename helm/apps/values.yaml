@@ -1,6 +1,6 @@
 apps:
   catalog:
-    image: otel-catalog:1.1
+    image: otel-catalog:1.2
     name: catalog
     host: catalog
     port: 8080
