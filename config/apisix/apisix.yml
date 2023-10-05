@@ -14,6 +14,9 @@ upstreams:
   - id: 5
     nodes:
       "warehouse-eu:8080": 1
+  - id: 6
+    nodes:
+      "mosquitto:1883": 1
 
 routes:
   - uri: /products*
@@ -52,6 +55,14 @@ routes:
       redirect:
         uri: /search
         ret_code: 301
+
+stream_routes:
+  - id: 1
+    upstream_id: 6
+    plugins:
+      mqtt-proxy:
+        protocol_name: MQTT
+        protocol_level: 5
 
 global_rules:
   - id: 1
