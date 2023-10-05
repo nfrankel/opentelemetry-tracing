@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>ch.frankel.blog</groupId>
 	<artifactId>catalog</artifactId>
-	<version>1.1</version>
+	<version>1.2</version>
 	<properties>
 		<java.version>21</java.version>
 		<kotlin.version>1.9.24</kotlin.version>
@@ -51,6 +51,25 @@
 			<version>2.3.0</version>
 		</dependency>
 		<dependency>
+			<groupId>io.opentelemetry</groupId>
+			<artifactId>opentelemetry-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.paho</groupId>
+			<artifactId>org.eclipse.paho.mqttv5.client</artifactId>
+			<version>1.2.5</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jetbrains.kotlinx</groupId>
+			<artifactId>kotlinx-serialization-core</artifactId>
+			<version>1.6.3</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jetbrains.kotlinx</groupId>
+			<artifactId>kotlinx-serialization-json</artifactId>
+			<version>1.6.3</version>
+		</dependency>
+		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>r2dbc-postgresql</artifactId>
 			<scope>runtime</scope>
@@ -71,6 +90,7 @@
 						<arg>-Xjsr305=strict</arg>
 					</args>
 					<compilerPlugins>
+						<plugin>kotlinx-serialization</plugin>
 						<plugin>spring</plugin>
 					</compilerPlugins>
 				</configuration>
@@ -78,6 +98,11 @@
 					<dependency>
 						<groupId>org.jetbrains.kotlin</groupId>
 						<artifactId>kotlin-maven-allopen</artifactId>
+						<version>${kotlin.version}</version>
+					</dependency>
+					<dependency>
+						<groupId>org.jetbrains.kotlin</groupId>
+						<artifactId>kotlin-maven-serialization</artifactId>
 						<version>${kotlin.version}</version>
 					</dependency>
 				</dependencies>
