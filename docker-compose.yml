@@ -61,7 +61,7 @@ services:
       OTEL_METRICS_EXPORTER: none
       OTEL_LOGS_EXPORTER: none
   analytics:
-    image: otel-analytics:1.0
+    image: otel-analytics-ts:1.0
     environment:
       - COLLECTOR_URI=http://jaeger:4318
       - MQTT_CLIENT_ID=analytics
