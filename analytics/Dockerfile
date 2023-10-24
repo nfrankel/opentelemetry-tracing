@@ -1,5 +1,5 @@
 #docker build -t otel-analytics:1.0 .
-FROM node:20-alpine
+FROM node:21-alpine
 
 WORKDIR /usr/src/app
 

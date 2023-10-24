@@ -93,17 +93,12 @@ class ProductHandler(
 val beans = beans {
     bean {
         val mqtt = ref<AppProperties>().mqtt
-        MqttClient(mqtt.serverUri, mqtt.clientId)
-    }
-    bean {
-        GlobalOpenTelemetry.get()
-    }
-    bean {
+        val client = MqttClient(mqtt.serverUri, mqtt.clientId)
         val handler = ProductHandler(ref(), ref(), Dispatchers.IO)
         coRouter {
             GET("/products")(handler::products)
             GET("/products/{id}")(handler::product)
-        }.filter(AnalyticsFilter(ref(), ref<AppProperties>().mqtt, ref<OpenTelemetry>()))
+        }.filter(AnalyticsFilter(client, mqtt, GlobalOpenTelemetry.get()))
     }
 }
 
