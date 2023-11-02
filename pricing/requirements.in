@@ -1,5 +1,5 @@
 Flask==2.3.3
-SQLAlchemy==2.0.21
+SQLAlchemy==2.0.23
 Flask-SQLAlchemy
 psycopg2-binary
 opentelemetry-distro==0.41b0
