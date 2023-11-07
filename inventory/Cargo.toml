@@ -15,7 +15,7 @@ init-tracing-opentelemetry = { version = "0.14", features = ["otlp", "tracing_su
 opentelemetry = { version = "0.20", features = ["rt-tokio"] }
 opentelemetry-otlp = { version = "0.13", features = ["reqwest-client"] }
 tracing = "0.1"
-tracing-opentelemetry = "0.21"
+tracing-opentelemetry = "0.22"
 tracing-subscriber = { version = "0.3", features = [ "env-filter", "fmt", "json"] }
 deadpool-postgres = { version = "0.11.0", features = ["serde"] }
 config = "0.13.3"
