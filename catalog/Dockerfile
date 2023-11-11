@@ -1,5 +1,5 @@
 #docker build -t otel-catalog:1.2 .
-FROM eclipse-temurin:21-jdk-jammy AS build
+FROM eclipse-temurin:21.0.1_12-jdk-jammy AS build
 
 COPY .mvn .mvn
 COPY mvnw .
@@ -8,7 +8,7 @@ COPY src src
 
 RUN --mount=type=cache,target=/root/.m2,rw ./mvnw package -DskipTests
 
-FROM eclipse-temurin:21-jre-jammy
+FROM eclipse-temurin:21.0.1_12-jre-jammy
 
 COPY --from=build target/catalog-1.2.jar catalog.jar
 
