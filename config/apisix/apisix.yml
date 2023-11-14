@@ -8,6 +8,9 @@ upstreams:
   - id: 3
     nodes:
       "pricing:8000": 1
+  - id: 4
+    nodes:
+      "mosquitto:1883": 1
 
 routes:
   - uri: /products*
@@ -31,6 +34,16 @@ routes:
       redirect:
         uri: /search
         ret_code: 301
+
+stream_routes:
+  - id: 1
+    uris:
+      - "*"
+    upstream_id: 4
+    plugins:
+      mqtt-proxy:
+        protocol_name: MQTT
+        protocol_level: 5
 
 global_rules:
   - id: 1

@@ -22,7 +22,7 @@ services:
       SPRING_R2DBC_PASSWORD: root
       APP_PRICING_ENDPOINT: http://apisix:9080/prices
       APP_STOCK_ENDPOINT: http://inventory:3000/stocks
-      APP_MQTT_SERVER_URI: tcp://mosquitto:1883
+      APP_MQTT_SERVER_URI: tcp://apisix:9100
       APP_MQTT_CLIENT_ID: catalog
       APP_MQTT_TOPIC: analytics
       APP_MQTT_MESSAGE_QOS: 1
@@ -68,7 +68,7 @@ services:
       - COLLECTOR_URI=http://jaeger:4318
       - MQTT_CLIENT_ID=analytics
       - MQTT_CONNECT_TIMEOUT=10
-      - MQTT_SERVER_URI=mqtt://mosquitto:1883
+      - MQTT_SERVER_URI=tcp://apisix:9100
       - MQTT_TOPIC=analytics
       - OTEL_LOG_LEVEL=DEBUG
     depends_on:
