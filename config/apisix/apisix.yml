@@ -37,8 +37,6 @@ routes:
 
 stream_routes:
   - id: 1
-    uris:
-      - "*"
     upstream_id: 4
     plugins:
       mqtt-proxy:

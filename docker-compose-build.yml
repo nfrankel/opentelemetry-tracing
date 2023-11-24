@@ -68,7 +68,7 @@ services:
       - COLLECTOR_URI=http://jaeger:4318
       - MQTT_CLIENT_ID=analytics
       - MQTT_CONNECT_TIMEOUT=10
-      - MQTT_SERVER_URI=mqtt://mosquitto:1883
+      - MQTT_SERVER_URI=mqtt://apisix:9100
       - MQTT_TOPIC=analytics
       - OTEL_LOG_LEVEL=DEBUG
     depends_on:
