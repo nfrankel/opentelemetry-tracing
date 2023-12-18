@@ -17,5 +17,5 @@ opentelemetry-otlp = { version = "0.14", features = ["reqwest-client"] }
 tracing = "0.1"
 tracing-opentelemetry = "0.22"
 tracing-subscriber = { version = "0.3", features = [ "env-filter", "fmt", "json"] }
-deadpool-postgres = { version = "0.12.0", features = ["serde"] }
+deadpool-postgres = { version = "0.12.1", features = ["serde"] }
 config = "0.13.4"
