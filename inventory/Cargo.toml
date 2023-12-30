@@ -10,7 +10,7 @@ axum-macros = "0.3.8"
 tower = "0.4"
 tower-http = "0.5"
 serde = { version = "1.0", features = ["derive"] }
-axum-tracing-opentelemetry = "0.15"
+axum-tracing-opentelemetry = "0.16"
 init-tracing-opentelemetry = { version = "0.15", features = ["otlp", "tracing_subscriber_ext"] }
 opentelemetry = "0.21.0"
 opentelemetry-otlp = { version = "0.14", features = ["reqwest-client"] }
