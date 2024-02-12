@@ -174,9 +174,9 @@ dependencies = [
 
 [[package]]
 name = "axum-tracing-opentelemetry"
-version = "0.16.0"
+version = "0.17.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "bdad298231394729042d1f155b93f9fdf0b5ee1aea0b62404c4d7341f7d8fe08"
+checksum = "7ef984673aba9ba21603ebf1b609822ef6152016a7ad31c443f5d5bf69c88eec"
 dependencies = [
  "axum 0.7.3",
  "futures-core",
@@ -1959,9 +1959,9 @@ dependencies = [
 
 [[package]]
 name = "tracing-opentelemetry-instrumentation-sdk"
-version = "0.16.0"
+version = "0.17.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "9920abb6a3ee3a2af7d30c9ff02900f8481935d36723c3da95cf807468218e8c"
+checksum = "41912afd0d6eab101c41db36397464801dbeeb546eb8b4038820dddb741689e3"
 dependencies = [
  "http 1.0.0",
  "opentelemetry",
