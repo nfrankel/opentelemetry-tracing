@@ -3,9 +3,9 @@
 
 
 "@babel/runtime@^7.23.8", "@babel/runtime@^7.24.4":
-  version "7.24.4"
-  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.24.4.tgz#de795accd698007a66ba44add6cc86542aff1edd"
-  integrity sha512-dkxf7+hn8mFBwKjs9bvBlArzLVxVbS8usaPUDd5p2a9JCL9tB8OaOVN1isD4+Xyk4ns89/xeOmbQvgdK7IIVdA==
+  version "7.24.5"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.24.5.tgz#230946857c053a36ccc66e1dd03b17dd0c4ed02c"
+  integrity sha512-Nms86NXrsaeU9vbBJKni6gXiEXZ4CVpYVzEjDH9Sb8vmZ3UljyA1GSOJl/6LGPO8EHLuSF9H+IxNXHPX8QHJ4g==
   dependencies:
     regenerator-runtime "^0.14.0"
 
@@ -516,9 +516,9 @@ long@^5.0.0:
   integrity sha512-lcHwpNoggQTObv5apGNCTdJrO69eHOZMi4BNC+rTLER8iHAqGrUVeLh/irVIM7zTw2bOXA8T6uNPeujwOLg/2Q==
 
 lru-cache@^10.0.1:
-  version "10.2.0"
-  resolved "https://registry.yarnpkg.com/lru-cache/-/lru-cache-10.2.0.tgz#0bd445ca57363465900f4d1f9bd8db343a4d95c3"
-  integrity sha512-2bIM8x+VAf6JT4bKAljS1qUWgMsqZRPGJS6FSahIMPVvctcNhyVp7AJu7quxOW9jwkryBReKZY5tY5JYv2n/7Q==
+  version "10.2.2"
+  resolved "https://registry.yarnpkg.com/lru-cache/-/lru-cache-10.2.2.tgz#48206bc114c1252940c41b25b41af5b545aca878"
+  integrity sha512-9hp3Vp2/hFQUiIwKo8XCeFVnrg8Pk3TYNPIR7tJADKi5YfcF7vEaK7avFHTlSy3kOKYaJQaalfEo6YuXdceBOQ==
 
 lru-cache@^6.0.0:
   version "6.0.0"
@@ -547,9 +547,9 @@ mqtt-packet@^9.0.0:
     process-nextick-args "^2.0.1"
 
 mqtt@^5.1.0, mqtt@^5.2.0:
-  version "5.5.3"
-  resolved "https://registry.yarnpkg.com/mqtt/-/mqtt-5.5.3.tgz#5aaec5cc37c467ac6994d9e6309d0ea42c9b36de"
-  integrity sha512-R5fTibItlB5kvikTrU29ZgImvAch2ihKMyuvN3CJqd6nsZuearCSv3IGqxEdsSIXxflK6lGDgFmqnsnyJqzYtQ==
+  version "5.5.5"
+  resolved "https://registry.yarnpkg.com/mqtt/-/mqtt-5.5.5.tgz#7f1710ad83bbd85eb8e616a449b8da0eb37266e7"
+  integrity sha512-vWglkVfumjnI53/tV+RMWbDuQL4ldGqc/wFX2EHkMy9sSV7Q0TQK+HcAtmg2QupI8DpcyNpoe2mNhaO/H4ILUg==
   dependencies:
     "@types/readable-stream" "^4.0.5"
     "@types/ws" "^8.5.9"
@@ -786,9 +786,9 @@ wrap-ansi@^7.0.0:
     strip-ansi "^6.0.0"
 
 ws@^8.14.2:
-  version "8.16.0"
-  resolved "https://registry.yarnpkg.com/ws/-/ws-8.16.0.tgz#d1cd774f36fbc07165066a60e40323eab6446fd4"
-  integrity sha512-HS0c//TP7Ina87TfiPUz1rQzMhHrl/SG2guqRcTOIUYD2q8uhUdNHZYJUaQ8aTGPzCh+c6oawMKW35nFl1dxyQ==
+  version "8.17.0"
+  resolved "https://registry.yarnpkg.com/ws/-/ws-8.17.0.tgz#d145d18eca2ed25aaf791a183903f7be5e295fea"
+  integrity sha512-uJq6108EgZMAl20KagGkzCKfMEjxmKvZHG7Tlq0Z6nOky7YF7aq4mOx6xK8TJ/i1LeK4Qus7INktacctDgY8Ow==
 
 y18n@^5.0.5:
   version "5.0.8"
