@@ -23,6 +23,6 @@ reqwest = { version = "0.12", features = ["http2", "json"], default-features = f
 reqwest-middleware = "0.3"
 reqwest-tracing = { version = "0.5", features = ["opentelemetry_0_22"] }
 lazy_static = "1.4"
-itertools = "0.12"
+itertools = "0.13"
 regex = "1.10"
 futures = "0.3"
