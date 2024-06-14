@@ -30,6 +30,8 @@ github.com/go-logfmt/logfmt v0.5.0/go.mod h1:wCYkCAKZfumFQihp8CzCvQ3paCTfi41vtzG
 github.com/go-logr/logr v1.2.2/go.mod h1:jdQByPbusPIv2/zmleS9BjJVeZ6kBagPoEUsqbVz/1A=
 github.com/go-logr/logr v1.4.1 h1:pKouT5E8xu9zeFC39JXRDukb6JFQPXM5p5I91188VAQ=
 github.com/go-logr/logr v1.4.1/go.mod h1:9T104GzyrTigFIr8wt5mBrctHMim0Nb2HLGrmQ40KvY=
+github.com/go-logr/logr v1.4.2 h1:6pFjapn8bFcIbiKo3XT4j/BhANplGihG6tvd+8rYgrY=
+github.com/go-logr/logr v1.4.2/go.mod h1:9T104GzyrTigFIr8wt5mBrctHMim0Nb2HLGrmQ40KvY=
 github.com/go-logr/stdr v1.2.2 h1:hSWxHoqTgW2S2qGc0LTAI563KZ5YKYRhT3MFKZMbjag=
 github.com/go-logr/stdr v1.2.2/go.mod h1:mMo/vtBO5dYbehREoey6XUKy/eSumjCCveDpRre4VKE=
 github.com/go-playground/assert/v2 v2.2.0 h1:JvknZsQTYeFEAhQwI4qEt9cyV5ONwRHC+lYKSsYSR8s=
@@ -188,8 +190,12 @@ github.com/ugorji/go/codec v1.2.12 h1:9LC83zGrHhuUA9l16C9AHXAqEV/2wBQ4nkvumAE65E
 github.com/ugorji/go/codec v1.2.12/go.mod h1:UNopzCgEMSXjBc6AOMqYvWC1ktqTAfzJZUZgYf6w6lg=
 github.com/uptrace/opentelemetry-go-extra/otelgorm v0.2.4 h1:+fyg2yLv3btuqLVRjU2UM0LX5w14GhKfb+uNpuhcRtQ=
 github.com/uptrace/opentelemetry-go-extra/otelgorm v0.2.4/go.mod h1:F7TZjBdAf7RyblndS2sXcQDOakytqKohrD62HzJ7rM8=
+github.com/uptrace/opentelemetry-go-extra/otelgorm v0.3.1 h1:GFFXCsiOWqrAovcIzxqJOYBEy2A/0jd//JNz/jTy1CA=
+github.com/uptrace/opentelemetry-go-extra/otelgorm v0.3.1/go.mod h1:ncqprpzpjuZHDkvsnl/baPLA0stLgZSLsYEvUhAVkbM=
 github.com/uptrace/opentelemetry-go-extra/otelsql v0.2.4 h1:x3omFAG2XkvWFg1hvXRinY2ExAL1Aacl7W9ZlYjo6gc=
 github.com/uptrace/opentelemetry-go-extra/otelsql v0.2.4/go.mod h1:qMKJr5fTnY0p7hqCQMNrAk62bCARWR5rAbTrGUFRuh4=
+github.com/uptrace/opentelemetry-go-extra/otelsql v0.3.1 h1:i4f4ey/v5x0zXurkqV/zbOZlMLu8WNIvpDn1tJzdutY=
+github.com/uptrace/opentelemetry-go-extra/otelsql v0.3.1/go.mod h1:ZKgZNsGk5Y+uOxRHcYb4MKLVpmKYU4/u7BUtbStJm7w=
 github.com/zenazn/goji v0.9.0/go.mod h1:7S9M489iMyHBNxwZnk9/EHS098H4/F6TATF2mIxtB1Q=
 go.opentelemetry.io/contrib/instrumentation/github.com/gin-gonic/gin/otelgin v0.52.0 h1:vkioc4XBfqnZZ7u40wK3Kgbjj9JYkvW6FY1ghmM/Shk=
 go.opentelemetry.io/contrib/instrumentation/github.com/gin-gonic/gin/otelgin v0.52.0/go.mod h1:vsyxiwPzPlijgouF1SRZRGqbuHod8fV6+MRCH7ltxDE=
