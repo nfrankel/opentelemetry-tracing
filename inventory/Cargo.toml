@@ -12,7 +12,7 @@ tower-http = "0.5"
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
 axum-tracing-opentelemetry = "0.18"
-init-tracing-opentelemetry = { version = "0.18", features = ["otlp", "tracing_subscriber_ext"] }
+init-tracing-opentelemetry = { version = "0.19", features = ["otlp", "tracing_subscriber_ext"] }
 opentelemetry = "0.23"
 opentelemetry-otlp = { version = "0.16", features = ["reqwest-client"] }
 tracing = "0.1"
