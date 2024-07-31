@@ -131,7 +131,7 @@ services:
     volumes:
       - ./config/postgres:/docker-entrypoint-initdb.d:ro
   redis:
-    image: redis:7.2-alpine
+    image: redis:7.4-alpine
   mosquitto:
     image: eclipse-mosquitto:2.0
     volumes:
