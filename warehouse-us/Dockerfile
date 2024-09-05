@@ -10,7 +10,7 @@ COPY *.go ./
 
 RUN go build -o warehouse
 
-FROM debian:12.5-slim
+FROM debian:12.7-slim
 
 COPY --from=build /go/warehouse .
 
