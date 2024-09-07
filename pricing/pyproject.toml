@@ -6,7 +6,7 @@ authors = ["Nicolas Fränkel <nicolas@frankel.ch>"]
 
 [tool.poetry.dependencies]
 python = "^3.12"
-gunicorn = "^22.0.0"
+gunicorn = "^23.0.0"
 Flask= "^2.3.3"
 SQLAlchemy = "^2.0.25"
 Flask-SQLAlchemy = "*"
