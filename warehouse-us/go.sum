@@ -212,8 +212,12 @@ github.com/ugorji/go/codec v1.2.12 h1:9LC83zGrHhuUA9l16C9AHXAqEV/2wBQ4nkvumAE65E
 github.com/ugorji/go/codec v1.2.12/go.mod h1:UNopzCgEMSXjBc6AOMqYvWC1ktqTAfzJZUZgYf6w6lg=
 github.com/uptrace/opentelemetry-go-extra/otelgorm v0.2.4 h1:+fyg2yLv3btuqLVRjU2UM0LX5w14GhKfb+uNpuhcRtQ=
 github.com/uptrace/opentelemetry-go-extra/otelgorm v0.2.4/go.mod h1:F7TZjBdAf7RyblndS2sXcQDOakytqKohrD62HzJ7rM8=
+github.com/uptrace/opentelemetry-go-extra/otelgorm v0.3.2 h1:Jjn3zoRz13f8b1bR6LrXWglx93Sbh4kYfwgmPju3E2k=
+github.com/uptrace/opentelemetry-go-extra/otelgorm v0.3.2/go.mod h1:wocb5pNrj/sjhWB9J5jctnC0K2eisSdz/nJJBNFHo+A=
 github.com/uptrace/opentelemetry-go-extra/otelsql v0.2.4 h1:x3omFAG2XkvWFg1hvXRinY2ExAL1Aacl7W9ZlYjo6gc=
 github.com/uptrace/opentelemetry-go-extra/otelsql v0.2.4/go.mod h1:qMKJr5fTnY0p7hqCQMNrAk62bCARWR5rAbTrGUFRuh4=
+github.com/uptrace/opentelemetry-go-extra/otelsql v0.3.2 h1:ZjUj9BLYf9PEqBn8W/OapxhPjVRdC6CsXTdULHsyk5c=
+github.com/uptrace/opentelemetry-go-extra/otelsql v0.3.2/go.mod h1:O8bHQfyinKwTXKkiKNGmLQS7vRsqRxIQTFZpYpHK3IQ=
 github.com/zenazn/goji v0.9.0/go.mod h1:7S9M489iMyHBNxwZnk9/EHS098H4/F6TATF2mIxtB1Q=
 go.opentelemetry.io/contrib/instrumentation/github.com/gin-gonic/gin/otelgin v0.52.0 h1:vkioc4XBfqnZZ7u40wK3Kgbjj9JYkvW6FY1ghmM/Shk=
 go.opentelemetry.io/contrib/instrumentation/github.com/gin-gonic/gin/otelgin v0.52.0/go.mod h1:vsyxiwPzPlijgouF1SRZRGqbuHod8fV6+MRCH7ltxDE=
