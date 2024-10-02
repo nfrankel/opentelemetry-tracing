@@ -8,7 +8,7 @@ COPY src src
 
 RUN --mount=type=cache,target=/root/.m2,rw ./mvnw -Pnative native:compile -DskipTests
 
-FROM busybox:1.36-glibc
+FROM busybox:1.37-glibc
 
 COPY --from=build /app/target/warehouse-eu warehouse-eu
 
