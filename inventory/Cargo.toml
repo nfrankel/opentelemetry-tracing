@@ -16,7 +16,7 @@ init-tracing-opentelemetry = { version = "0.18", features = ["otlp", "tracing_su
 opentelemetry = "0.25"
 opentelemetry-otlp = { version = "0.25", features = ["reqwest-client"] }
 tracing = "0.1"
-tracing-opentelemetry = "0.26"
+tracing-opentelemetry = "0.27"
 tracing-subscriber = { version = "0.3", features = ["env-filter", "fmt", "json"] }
 config = "0.14"
 reqwest = { version = "0.12", features = ["http2", "json"], default-features = false }
