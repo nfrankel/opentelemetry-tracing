@@ -1,5 +1,5 @@
 #docker build -t otel-pricing:1.1 .
-FROM python:3.12-slim
+FROM python:3.13-slim
 
 ENV POETRY_CACHE_DIR=/tmp/poetry_cache
 
