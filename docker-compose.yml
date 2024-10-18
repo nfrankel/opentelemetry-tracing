@@ -4,7 +4,7 @@ services:
     environment:
       COLLECTOR_OTLP_ENABLED: true
   apisix-front:
-    image: apache/apisix:3.10.0-debian
+    image: apache/apisix:3.11.0-debian
     volumes:
       - ./config/apisix/front/config.yml:/usr/local/apisix/conf/config.yaml:ro
       - ./config/apisix/front/apisix.yml:/usr/local/apisix/conf/apisix.yaml:ro
@@ -64,7 +64,7 @@ services:
     depends_on:
       - apisix-inv
   apisix-inv:
-    image: apache/apisix:3.10.0-debian
+    image: apache/apisix:3.11.0-debian
     volumes:
       - ./config/apisix/inv/config.yml:/usr/local/apisix/conf/config.yaml:ro
       - ./config/apisix/inv/apisix.yml:/usr/local/apisix/conf/apisix.yaml:ro
