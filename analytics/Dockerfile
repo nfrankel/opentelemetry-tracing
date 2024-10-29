@@ -1,5 +1,5 @@
 #docker build -t otel-analytics:1.0 .
-FROM node:21-alpine AS build
+FROM node:22-alpine AS build
 
 WORKDIR /usr/src/app
 
@@ -12,7 +12,7 @@ COPY tsconfig.json .
 
 RUN yarn run build
 
-FROM node:21-alpine
+FROM node:22-alpine
 
 WORKDIR /usr/src/app
 
