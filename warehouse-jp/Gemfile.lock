@@ -215,15 +215,14 @@ GEM
     opentelemetry-semantic_conventions (1.10.1)
       opentelemetry-api (~> 1.0)
     pg (1.5.9)
-    rack (3.0.11)
+    rack (3.1.8)
     rack-protection (4.0.0)
       base64 (>= 0.1.0)
       rack (>= 3.0.0, < 4)
     rack-session (2.0.0)
       rack (>= 3.0.0)
-    rackup (2.1.0)
+    rackup (2.2.0)
       rack (>= 3)
-      webrick (~> 1.8)
     rake (13.2.1)
     ruby2_keywords (0.0.5)
     sequel (5.86.0)
@@ -241,7 +240,6 @@ GEM
       sinatra (= 4.0.0)
       tilt (~> 2.0)
     tilt (2.3.0)
-    webrick (1.8.1)
 
 PLATFORMS
   arm64-darwin-22
