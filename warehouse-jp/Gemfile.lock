@@ -11,6 +11,7 @@ GEM
       rake (>= 13)
     googleapis-common-protos-types (1.15.0)
       google-protobuf (>= 3.18, < 5.a)
+    logger (1.2.8.1)
     multi_json (1.15.0)
     mustermann (3.0.0)
       ruby2_keywords (~> 0.0.1)
@@ -215,6 +216,7 @@ GEM
     opentelemetry-semantic_conventions (1.10.1)
       opentelemetry-api (~> 1.0)
     pg (1.5.9)
+    puma (0.8.0)
     rack (3.1.8)
     rack-protection (4.0.0)
       base64 (>= 0.1.0)
@@ -247,10 +249,12 @@ PLATFORMS
 
 DEPENDENCIES
   google-protobuf
+  logger
   opentelemetry-exporter-otlp
   opentelemetry-instrumentation-all
   opentelemetry-sdk
   pg
+  puma
   rackup
   sequel
   sinatra
