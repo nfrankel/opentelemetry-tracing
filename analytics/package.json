@@ -11,9 +11,9 @@
   "private": false,
   "dependencies": {
     "@opentelemetry/api": "^1.6.0",
-    "@opentelemetry/exporter-trace-otlp-http": "^0.54.0",
+    "@opentelemetry/exporter-trace-otlp-http": "^0.55.0",
     "@opentelemetry/resources": "^1.17.0",
-    "@opentelemetry/sdk-node": "^0.54.0",
+    "@opentelemetry/sdk-node": "^0.55.0",
     "@opentelemetry/sdk-trace-node": "^1.17.0",
     "@opentelemetry/semantic-conventions": "^1.17.0",
     "mqtt": "^5.1.0",
