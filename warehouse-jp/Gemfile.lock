@@ -11,7 +11,7 @@ GEM
       rake (>= 13)
     googleapis-common-protos-types (1.15.0)
       google-protobuf (>= 3.18, < 5.a)
-    logger (1.2.8.1)
+    logger (1.6.1)
     multi_json (1.15.0)
     mustermann (3.0.3)
       ruby2_keywords (~> 0.0.1)
