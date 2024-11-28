@@ -64,6 +64,8 @@ spec:
               value: http://collector:4318
             - name: OTEL_SERVICE_NAME
               value: stocks Japan
+            - name: OTEL_RESOURCE_ATTRIBUTES
+              value: k8s.container.name=warehouse-jp
             - name: OTEL_METRICS_EXPORTER
               value: none
             - name: OTEL_LOGS_EXPORTER

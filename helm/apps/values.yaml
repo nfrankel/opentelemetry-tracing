@@ -30,10 +30,13 @@ apps:
 opentelemetry-collector:
   image:
     repository: "otel/opentelemetry-collector-k8s"
-    tag: "0.123.0"
+    tag: "0.149.0"
   fullnameOverride: collector
   enabled: true
   mode: deployment
+  presets:
+    kubernetesAttributes:
+      enabled: true
   serviceAccount:
     create: false
   clusterRole:
@@ -50,6 +53,11 @@ opentelemetry-collector:
   config:
     processors:
       batch: {}
+      resource:
+        attributes:
+          - key: k8s.cluster.name
+            value: vcluster
+            action: upsert
     exporters:
       debug:
         sampling_initial: 1
@@ -62,7 +70,7 @@ opentelemetry-collector:
       pipelines:
         traces:
           receivers: ["otlp"]
-          processors: ["batch"]
+          processors: ["batch", "resource"]
           exporters: ["otlp"]
 
 postgresql:
@@ -89,3 +97,4 @@ opentelemetry-operator:
       enabled: false
     autoGenerateCert:
       enabled: true
+      recreate: false
