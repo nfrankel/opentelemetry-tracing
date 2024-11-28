@@ -42,6 +42,8 @@ spec:
               value: http://collector:4317
             - name: QUARKUS_OTEL_SERVICE_NAME
               value: stocks UK
+            - name: QUARKUS_OTEL_RESOURCE_ATTRIBUTES
+              value: k8s.container.name=warehouse-uk
 ---
 apiVersion: v1
 kind: Service
