@@ -34,4 +34,6 @@ spec:
               value: http://{{ .infra.services.collector }}.{{ .infra.namespace }}:4318
             - name: OTEL_SERVICE_NAME
               value: analytics
+            - name: OTEL_RESOURCE_ATTRIBUTES
+              value: k8s.container.name=analytics
 {{- end }}

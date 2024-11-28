@@ -1,0 +1,14 @@
+{{- with .Values }}
+apiVersion: opentelemetry.io/v1alpha1
+kind: Instrumentation
+metadata:
+  name: demo-instrumentation
+spec:
+  exporter:
+    endpoint: http://{{ .infra.services.collector }}.{{ .infra.namespace }}:4318
+  propagators:
+    - tracecontext
+    - baggage
+  sampler:
+    type: always_on
+{{- end }}
