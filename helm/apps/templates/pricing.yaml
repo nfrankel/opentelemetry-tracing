@@ -40,6 +40,8 @@ spec:
               value: http://collector:4317
             - name: OTEL_SERVICE_NAME
               value: pricing
+            - name: OTEL_RESOURCE_ATTRIBUTES
+              value: k8s.container.name=pricing
             - name: OTEL_METRICS_EXPORTER
               value: none
             - name: OTEL_LOGS_EXPORTER
