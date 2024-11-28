@@ -26,6 +26,9 @@ opentelemetry-collector:
   fullnameOverride: collector
   enabled: true
   mode: deployment
+  presets:
+    kubernetesAttributes:
+      enabled: true
   serviceAccount:
     create: false
   ports:
@@ -40,6 +43,11 @@ opentelemetry-collector:
   config:
     processors:
       batch: {}
+      resource:
+        attributes:
+          - key: k8s.cluster.name
+            value: vcluster
+            action: upsert
     exporters:
       debug:
         sampling_initial: 1
@@ -52,7 +60,7 @@ opentelemetry-collector:
       pipelines:
         traces:
           receivers: ["otlp"]
-          processors: ["batch"]
+          processors: ["batch", "resource"]
           exporters: ["otlp"]
 
 postgresql:
