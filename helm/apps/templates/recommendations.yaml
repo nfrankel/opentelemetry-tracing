@@ -40,6 +40,8 @@ spec:
               value: recommendations
             - name: OTEL_SERVICE_NAME
               value: recommandations
+            - name: OTEL_RESOURCE_ATTRIBUTES
+              value: k8s.container.name=recommandations
 ---
 apiVersion: v1
 kind: Service
