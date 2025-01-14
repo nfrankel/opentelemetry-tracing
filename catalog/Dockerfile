@@ -1,5 +1,5 @@
 #docker build -t otel-catalog:1.2 .
-FROM eclipse-temurin:21-jdk-jammy AS build
+FROM eclipse-temurin:21.0.5_11-jdk-jammy AS build
 
 COPY .mvn .mvn
 COPY mvnw .
