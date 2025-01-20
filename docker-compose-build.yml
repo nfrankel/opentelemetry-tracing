@@ -6,7 +6,7 @@ services:
     ports:
       - "9080:16686"
   krakend:
-    image: devopsfaith/krakend:2.8
+    image: devopsfaith/krakend:2.9
     command:
       - run
       - -c
