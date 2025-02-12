@@ -1,5 +1,5 @@
 #docker build -t otel-warehouse-us:1.0 .
-FROM golang:1.23 AS build
+FROM golang:1.24 AS build
 
 COPY go.mod .
 COPY go.sum .
