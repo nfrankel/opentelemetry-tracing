@@ -7,9 +7,9 @@ dependencies:
   version: 34.3.0
 - name: valkey
   repository: https://charts.bitnami.com/bitnami
-  version: 2.0.2
+  version: 2.2.3
 - name: jaeger
   repository: https://jaegertracing.github.io/helm-charts
   version: 3.3.3
-digest: sha256:02a41041f7f32ec40113e4b90af01663c4dd59fe106d4365f6cf29c31cda8c78
-generated: "2025-02-14T06:31:07.154526287Z"
+digest: sha256:26d34aa17f456f9ec39678c76b668f46b564b31d10a59e5c47b293d413b63228
+generated: "2025-02-14T07:01:03.537427901Z"

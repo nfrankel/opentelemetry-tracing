@@ -23,7 +23,7 @@ dependencies:
     version: "34.3.0"
     repository: https://traefik.github.io/charts
   - name: valkey
-    version: "2.0.2"
+    version: "2.2.3"
     repository: https://charts.bitnami.com/bitnami
   - name: jaeger
     version: "3.3.3"
