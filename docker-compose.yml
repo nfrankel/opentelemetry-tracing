@@ -150,7 +150,7 @@ services:
     volumes:
       - ./config/postgres:/docker-entrypoint-initdb.d:ro
   valkey:
-    image: bitnami/valkey:8.0.1-debian-12-r1
+    image: bitnami/valkey:8.0.2-debian-12-r5
     environment:
       ALLOW_EMPTY_PASSWORD: true
   mosquitto:
