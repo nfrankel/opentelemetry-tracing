@@ -20,7 +20,7 @@ dependencies:
     version: "0.116.0"
     repository: https://open-telemetry.github.io/opentelemetry-helm-charts
   - name: postgresql
-    version: "16.4.9"
+    version: "16.4.14"
     repository: https://charts.bitnami.com/bitnami
   - name: opentelemetry-operator
     version: "0.80.2"
