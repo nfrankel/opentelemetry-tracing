@@ -12,9 +12,9 @@
   "dependencies": {
     "@opentelemetry/api": "^1.6.0",
     "@opentelemetry/exporter-trace-otlp-http": "^0.57.0",
-    "@opentelemetry/resources": "^1.17.0",
+    "@opentelemetry/resources": "^2.0.0",
     "@opentelemetry/sdk-node": "^0.57.0",
-    "@opentelemetry/sdk-trace-node": "^1.17.0",
+    "@opentelemetry/sdk-trace-node": "^2.0.0",
     "@opentelemetry/semantic-conventions": "^1.17.0",
     "mqtt": "^5.1.0",
     "ts-node": "^10.9.1"
