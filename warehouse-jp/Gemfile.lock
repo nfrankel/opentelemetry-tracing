@@ -2,7 +2,7 @@ GEM
   remote: https://rubygems.org/
   specs:
     base64 (0.2.0)
-    bigdecimal (3.1.9)
+    bigdecimal (3.2.2)
     google-protobuf (4.31.1-aarch64-linux-gnu)
       bigdecimal
       rake (>= 13)
@@ -249,7 +249,7 @@ GEM
       rack (>= 3)
     rake (13.2.1)
     ruby2_keywords (0.0.5)
-    sequel (5.92.0)
+    sequel (5.93.0)
       bigdecimal
     sinatra (4.1.1)
       logger (>= 1.6.0)
