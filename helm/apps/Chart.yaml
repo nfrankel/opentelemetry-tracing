@@ -23,5 +23,5 @@ dependencies:
     version: "16.7.13"
     repository: https://charts.bitnami.com/bitnami
   - name: opentelemetry-operator
-    version: "0.90.3"
+    version: "0.90.4"
     repository: https://open-telemetry.github.io/opentelemetry-helm-charts
