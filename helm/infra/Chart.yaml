@@ -17,7 +17,7 @@ appVersion: "1.0.0"
 
 dependencies:
   - name: opentelemetry-collector
-    version: "0.129.0"
+    version: "0.130.1"
     repository: "https://open-telemetry.github.io/opentelemetry-helm-charts"
   - name: traefik
     version: "37.0.0"
