@@ -17,7 +17,7 @@ appVersion: "1.2.0"
 
 dependencies:
   - name: opentelemetry-collector
-    version: "0.130.1"
+    version: "0.130.2"
     repository: https://open-telemetry.github.io/opentelemetry-helm-charts
   - name: postgresql
     version: "16.7.24"
