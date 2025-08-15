@@ -3,13 +3,13 @@ GEM
   specs:
     base64 (0.2.0)
     bigdecimal (3.2.2)
-    google-protobuf (4.31.1-aarch64-linux-gnu)
+    google-protobuf (4.32.0-aarch64-linux-gnu)
       bigdecimal
       rake (>= 13)
-    google-protobuf (4.31.1-arm64-darwin)
+    google-protobuf (4.32.0-arm64-darwin)
       bigdecimal
       rake (>= 13)
-    google-protobuf (4.31.1-x86_64-linux-gnu)
+    google-protobuf (4.32.0-x86_64-linux-gnu)
       bigdecimal
       rake (>= 13)
     googleapis-common-protos-types (1.18.0)
@@ -249,7 +249,7 @@ GEM
       rack (>= 3.0.0)
     rackup (2.2.1)
       rack (>= 3)
-    rake (13.2.1)
+    rake (13.3.0)
     ruby2_keywords (0.0.5)
     sequel (5.95.1)
       bigdecimal
