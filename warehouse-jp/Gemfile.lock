@@ -239,9 +239,9 @@ GEM
       opentelemetry-semantic_conventions
     opentelemetry-semantic_conventions (1.11.0)
       opentelemetry-api (~> 1.0)
-    pg (1.6.1-aarch64-linux)
-    pg (1.6.1-arm64-darwin)
-    pg (1.6.1-x86_64-linux)
+    pg (1.6.2-aarch64-linux)
+    pg (1.6.2-arm64-darwin)
+    pg (1.6.2-x86_64-linux)
     puma (6.6.1)
       nio4r (~> 2.0)
     rack (3.1.10)
