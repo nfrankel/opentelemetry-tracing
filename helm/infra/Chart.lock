@@ -4,12 +4,12 @@ dependencies:
   version: 0.134.1
 - name: traefik
   repository: https://traefik.github.io/charts
-  version: 36.3.0
+  version: 37.1.1
 - name: valkey
   repository: https://charts.bitnami.com/bitnami
   version: 3.0.31
 - name: jaeger
   repository: https://jaegertracing.github.io/helm-charts
   version: 3.4.1
-digest: sha256:dcc90458654346d3fb4fd89331ff1f51dfdd0ef036c2715db87c74ebd133c1ed
-generated: "2025-09-24T18:34:45.307227+02:00"
+digest: sha256:b0c118161361a9d51a10fbd33c511c214076d135f92a4aa0a8e993c2d1ad4062
+generated: "2025-09-24T17:02:31.632771576Z"
