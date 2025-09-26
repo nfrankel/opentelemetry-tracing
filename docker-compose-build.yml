@@ -144,7 +144,7 @@ services:
     depends_on:
       - mosquitto
   postgres:
-    image: postgres:17-alpine
+    image: postgres:18-alpine
     environment:
       POSTGRES_PASSWORD: root
     volumes:
