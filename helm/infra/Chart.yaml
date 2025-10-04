@@ -20,7 +20,7 @@ dependencies:
     version: "0.136.1"
     repository: "https://open-telemetry.github.io/opentelemetry-helm-charts"
   - name: traefik
-    version: "36.3.0"
+    version: "37.1.2"
     repository: https://traefik.github.io/charts
   - name: valkey
     version: "3.0.31"
