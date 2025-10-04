@@ -1,7 +1,7 @@
 dependencies:
 - name: opentelemetry-collector
   repository: https://open-telemetry.github.io/opentelemetry-helm-charts
-  version: 0.134.1
+  version: 0.136.1
 - name: traefik
   repository: https://traefik.github.io/charts
   version: 36.3.0
@@ -11,5 +11,5 @@ dependencies:
 - name: jaeger
   repository: https://jaegertracing.github.io/helm-charts
   version: 3.4.1
-digest: sha256:dcc90458654346d3fb4fd89331ff1f51dfdd0ef036c2715db87c74ebd133c1ed
-generated: "2025-09-24T18:34:45.307227+02:00"
+digest: sha256:d6c35190e1aadac07ebe1ef552d0466afbd7574543b5d5b2df0b232801446885
+generated: "2025-10-04T18:23:29.195188121Z"
