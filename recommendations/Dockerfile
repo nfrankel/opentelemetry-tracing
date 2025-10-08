@@ -1,5 +1,5 @@
 #docker build -t otel-recommendations:1.0 .
-FROM python:3.13-slim
+FROM python:3.14-slim
 
 COPY pyproject.toml poetry.lock app.py ./
 
