@@ -1,5 +1,5 @@
 #docker build -t otel-warehouse-uk:1.0 .
-FROM registry.access.redhat.com/ubi8/openjdk-21:1.23 AS build
+FROM registry.access.redhat.com/ubi8/openjdk-21:1.23-3.1759823915 AS build
 
 COPY .mvn .mvn
 COPY mvnw .
@@ -8,7 +8,7 @@ COPY src src
 
 RUN --mount=type=cache,target=/root/.m2,rw ./mvnw package -DskipTests
 
-FROM registry.access.redhat.com/ubi8/openjdk-21:1.23
+FROM registry.access.redhat.com/ubi8/openjdk-21:1.23-3.1759823915
 
 ENV LANGUAGE='en_US:en'
 
