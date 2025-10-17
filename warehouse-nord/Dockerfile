@@ -1,5 +1,5 @@
 #docker build -t otel-warehouse-nord:1.0 .
-FROM erlang:27-alpine AS builder
+FROM erlang:28-alpine AS builder
 
 WORKDIR /build
 
@@ -19,7 +19,7 @@ COPY src ./src
 RUN gleam export erlang-shipment
 
 # Runtime stage
-FROM erlang:27-alpine
+FROM erlang:28-alpine
 
 WORKDIR /app
 
