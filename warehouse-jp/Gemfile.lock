@@ -194,7 +194,7 @@ GEM
     pg (1.6.2-aarch64-linux)
     pg (1.6.2-arm64-darwin)
     pg (1.6.2-x86_64-linux)
-    puma (7.0.4)
+    puma (7.1.0)
       nio4r (~> 2.0)
     rack (3.2.3)
     rack-protection (4.2.1)
