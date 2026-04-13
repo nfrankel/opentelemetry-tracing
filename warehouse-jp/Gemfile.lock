@@ -18,7 +18,7 @@ GEM
     multi_json (1.17.0)
     mustermann (3.0.4)
       ruby2_keywords (~> 0.0.1)
-    nio4r (2.7.4)
+    nio4r (2.7.5)
     opentelemetry-api (1.8.0)
       logger
     opentelemetry-common (0.23.0)
@@ -196,7 +196,7 @@ GEM
     pg (1.6.2-aarch64-linux)
     pg (1.6.2-arm64-darwin)
     pg (1.6.2-x86_64-linux)
-    puma (7.1.0)
+    puma (7.2.0)
       nio4r (~> 2.0)
     rack (3.2.3)
     rack-protection (4.2.1)
