@@ -2,7 +2,7 @@ module warehouse
 
 go 1.25.0
 
-toolchain go1.26.2
+toolchain go1.27.1
 
 require (
 	github.com/gin-gonic/gin v1.11.0
