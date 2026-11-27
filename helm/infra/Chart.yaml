@@ -26,5 +26,5 @@ dependencies:
     version: "4.1.1"
     repository: https://charts.bitnami.com/bitnami
   - name: jaeger
-    version: "3.4.1"
+    version: "4.20.1"
     repository: https://jaegertracing.github.io/helm-charts
