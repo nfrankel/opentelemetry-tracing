@@ -7,7 +7,7 @@
 # You should check this file into your source control repository.
 
 packages = [
-  { name = "acceptor_pool", version = "1.0.0", build_tools = ["rebar3"], requirements = [], otp_app = "acceptor_pool", source = "hex", outer_checksum = "0CBCD83FDC8B9AD2EEE2067EF8B91A14858A5883CB7CD800E6FCD5803E158788" },
+  { name = "acceptor_pool", version = "1.0.1", build_tools = ["rebar3"], requirements = [], otp_app = "acceptor_pool", source = "hex", outer_checksum = "F172F3D74513E8EDD445C257D596FC84DBDD56D2C6FA287434269648AE5A421E" },
   { name = "backoff", version = "1.1.6", build_tools = ["rebar3"], requirements = [], otp_app = "backoff", source = "hex", outer_checksum = "CF0CFFF8995FB20562F822E5CC47D8CCF664C5ECDC26A684CBE85C225F9D7C39" },
   { name = "ctx", version = "0.6.0", build_tools = ["rebar3"], requirements = [], otp_app = "ctx", source = "hex", outer_checksum = "A14ED2D1B67723DBEBBE423B28D7615EB0BDCBA6FF28F2D1F1B0A7E1D4AA5FC2" },
   { name = "envoy", version = "1.0.2", build_tools = ["gleam"], requirements = ["gleam_stdlib"], otp_app = "envoy", source = "hex", outer_checksum = "95FD059345AA982E89A0B6E2A3BF1CF43E17A7048DCD85B5B65D3B9E4E39D359" },
@@ -22,9 +22,9 @@ packages = [
   { name = "gleam_yielder", version = "1.1.0", build_tools = ["gleam"], requirements = ["gleam_stdlib"], otp_app = "gleam_yielder", source = "hex", outer_checksum = "8E4E4ECFA7982859F430C57F549200C7749823C106759F4A19A78AEA6687717A" },
   { name = "glisten", version = "8.0.1", build_tools = ["gleam"], requirements = ["gleam_erlang", "gleam_otp", "gleam_stdlib", "logging", "telemetry"], otp_app = "glisten", source = "hex", outer_checksum = "534BB27C71FB9E506345A767C0D76B17A9E9199934340C975DC003C710E3692D" },
   { name = "glotel", version = "0.1.0", build_tools = ["gleam"], requirements = ["gleam_stdlib", "opentelemetry", "opentelemetry_exporter"], otp_app = "glotel", source = "hex", outer_checksum = "0F88DEA8B3A03D801328EF744619869394744CB21FD771D2DC9046E10890728F" },
-  { name = "gproc", version = "0.9.1", build_tools = ["rebar3"], requirements = [], otp_app = "gproc", source = "hex", outer_checksum = "905088E32E72127ED9466F0BAC0D8E65704CA5E73EE5A62CB073C3117916D507" },
+  { name = "gproc", version = "1.2.0", build_tools = ["rebar3"], requirements = [], otp_app = "gproc", source = "hex", outer_checksum = "70C6F8C91FA5974296CD87974949D8EAB953230414F31C4A623FF75131E0827A" },
   { name = "gramps", version = "6.0.0", build_tools = ["gleam"], requirements = ["gleam_crypto", "gleam_erlang", "gleam_http", "gleam_stdlib"], otp_app = "gramps", source = "hex", outer_checksum = "8B7195978FBFD30B43DF791A8A272041B81E45D245314D7A41FC57237AA882A0" },
-  { name = "grpcbox", version = "0.17.1", build_tools = ["rebar3"], requirements = ["acceptor_pool", "ctx", "gproc", "ts_chatterbox"], otp_app = "grpcbox", source = "hex", outer_checksum = "4A3B5D7111DAABC569DC9CBD9B202A3237D81C80BF97212FBC676832CB0CEB17" },
+  { name = "grpcbox", version = "0.18.0", build_tools = ["rebar3"], requirements = ["acceptor_pool", "ctx", "gproc", "ts_chatterbox"], otp_app = "grpcbox", source = "hex", outer_checksum = "5EC9F8FE664AB51201B32C117A61511A1F9D6316771E3891BA8A88D289A732AB" },
   { name = "hpack_erl", version = "0.3.0", build_tools = ["rebar3"], requirements = [], otp_app = "hpack", source = "hex", outer_checksum = "D6137D7079169D8C485C6962DFE261AF5B9EF60FBC557344511C1E65E3D95FB0" },
   { name = "logging", version = "1.3.0", build_tools = ["gleam"], requirements = ["gleam_stdlib"], otp_app = "logging", source = "hex", outer_checksum = "1098FBF10B54B44C2C7FDF0B01C1253CAFACDACABEFB4B0D027803246753E06D" },
   { name = "mist", version = "5.0.3", build_tools = ["gleam"], requirements = ["exception", "gleam_erlang", "gleam_http", "gleam_otp", "gleam_stdlib", "gleam_yielder", "glisten", "gramps", "hpack_erl", "logging"], otp_app = "mist", source = "hex", outer_checksum = "7C4BE717A81305323C47C8A591E6B9BA4AC7F56354BF70B4D3DF08CC01192668" },
@@ -34,10 +34,10 @@ packages = [
   { name = "pg_types", version = "0.5.0", build_tools = ["rebar3"], requirements = [], otp_app = "pg_types", source = "hex", outer_checksum = "A3023B464AA960BC1628635081E30CCA4F676F2D4C23CCD6179C1C11C9B4A642" },
   { name = "pgo", version = "0.15.0", build_tools = ["rebar3"], requirements = ["backoff", "opentelemetry_api", "pg_types"], otp_app = "pgo", source = "hex", outer_checksum = "4B883D751B8D4247F4D8A6FBAE58EDB6FA9DBC183371299BF84975EE36406388" },
   { name = "pog", version = "4.1.0", build_tools = ["gleam"], requirements = ["exception", "gleam_erlang", "gleam_otp", "gleam_stdlib", "gleam_time", "pgo"], otp_app = "pog", source = "hex", outer_checksum = "E4AFBA39A5FAA2E77291836C9683ADE882E65A06AB28CA7D61AE7A3AD61EBBD5" },
-  { name = "ssl_verify_fun", version = "1.1.7", build_tools = ["mix", "rebar3", "make"], requirements = [], otp_app = "ssl_verify_fun", source = "hex", outer_checksum = "FE4C190E8F37401D30167C8C405EDA19469F34577987C76DDE613E838BBC67F8" },
+  { name = "ssl_verify_fun", version = "1.1.9", build_tools = ["mix", "rebar3", "make"], requirements = [], otp_app = "ssl_verify_fun", source = "hex", outer_checksum = "19F24AD715EF6255D530B2F0DB8B2D2191AE435B6527234E943F523E84ED0895" },
   { name = "telemetry", version = "1.3.0", build_tools = ["rebar3"], requirements = [], otp_app = "telemetry", source = "hex", outer_checksum = "7015FC8919DBE63764F4B4B87A95B7C0996BD539E0D499BE6EC9D7F3875B79E6" },
-  { name = "tls_certificate_check", version = "1.29.0", build_tools = ["rebar3"], requirements = ["ssl_verify_fun"], otp_app = "tls_certificate_check", source = "hex", outer_checksum = "5B0D0E5CB0F928BC4F210DF667304ED91C5BFF2A391CE6BDEDFBFE70A8F096C5" },
-  { name = "ts_chatterbox", version = "0.15.1", build_tools = ["rebar3"], requirements = ["hpack_erl"], otp_app = "chatterbox", source = "hex", outer_checksum = "4F75B91451338BC0DA5F52F3480FA6EF6E3A2AEECFC33686D6B3D0A0948F31AA" },
+  { name = "tls_certificate_check", version = "1.36.0", build_tools = ["rebar3"], requirements = ["ssl_verify_fun"], otp_app = "tls_certificate_check", source = "hex", outer_checksum = "E58B8626336B9CD483F0FD8346AF501DE648A07093B077BE442F29EF6DB28EF1" },
+  { name = "ts_chatterbox", version = "0.16.0", build_tools = ["rebar3"], requirements = ["hpack_erl"], otp_app = "chatterbox", source = "hex", outer_checksum = "34C145C702F3A8D22F49A189EB34579EF3DB68F9A98A82D19B5CF6E390AAD54F" },
 ]
 
 [requirements]
@@ -46,6 +46,6 @@ gleam_erlang = { version = "~> 1.0" }
 gleam_http = { version = "~> 4.0" }
 gleam_json = { version = "~> 3.0" }
 gleam_stdlib = { version = "~> 0.45 or ~> 0.71 or ~> 1.0" }
-glotel = { version = "~> 0.1" }
+glotel = { version = "~> 0.1 or ~> 1.0" }
 mist = { version = "~> 5.0" }
 pog = { version = "~> 4.1" }
