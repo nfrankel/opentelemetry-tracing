@@ -1,5 +1,5 @@
 #docker build -t otel-pricing:1.2 .
-FROM python:3.13-slim
+FROM python:3.15-slim
 
 COPY pyproject.toml .
 COPY app.py .
